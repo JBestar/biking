@@ -40,7 +40,7 @@
 
 </div>
 
-<script src="<?php echo base_url('/assets/js/staff/staff_v1.js');?>"></script>
+<script src="<?php echo base_url('/assets/js/staff/staff.js');?>"></script>
 <script>
     $(document).ready(function(){
         stf_level = 9;

@@ -31,4 +31,4 @@
     </div>
 </div>
 
-<script src="<?php echo base_url('/assets/js/staff/admin_v1.js');?>"></script>
+<script src="<?php echo base_url('/assets/js/staff/admin.js');?>"></script>

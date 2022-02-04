@@ -51,7 +51,14 @@ class BaseController extends Controller
 
 	}
 
-	/*
+	protected function sess_login(){
+		$sess_id = $this->session->session_id;
+		$sess_uid = $this->session->uid;
+		$ip_addr = $this->request->getIPAddress();
+		
+		$this->sess_model->register($sess_id, $sess_uid, $ip_addr);
+	}
+	
 	protected function sess_logout(){
 
 		$sess_id = $this->session->session_id;
@@ -60,7 +67,7 @@ class BaseController extends Controller
 
 	}
 
-	protected function sess_logged(){
+	protected function sess_update(){
 
 		$this->sess_model->deleteLast();
 
@@ -69,7 +76,8 @@ class BaseController extends Controller
 		$objSess = $this->sess_model->getById($sess_id);
 
 		if(is_null($objSess)){
-			return false;
+			$this->sess_login();
+			return true;
 		}
 
 		$sess_uid = $this->session->uid;
@@ -84,7 +92,7 @@ class BaseController extends Controller
 
 	}
 
-	*/
+	
 
 
 }

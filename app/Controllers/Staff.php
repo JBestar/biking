@@ -30,6 +30,8 @@ class Staff extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+			
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
 			
@@ -75,6 +77,8 @@ class Staff extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -120,6 +124,8 @@ class Staff extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -176,6 +182,8 @@ class Staff extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -220,6 +228,8 @@ class Staff extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -286,6 +296,8 @@ class Staff extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -330,6 +342,8 @@ class Staff extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -394,6 +408,8 @@ class Staff extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -435,6 +451,8 @@ class Staff extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -481,6 +499,8 @@ class Staff extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -537,6 +557,8 @@ class Staff extends BaseController
 			$this->response->redirect('/pages/login');			
 		} 
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -598,11 +620,8 @@ class Staff extends BaseController
 				$sessData = array('uid'=>$objStaff->stf_uid, 'logged_in'=>TRUE);
 
 				$this->session->set($sessData);
+				$this->sess_login();
 				
-//				$sess_id = $this->session->session_id;
-//				$ip_addr = $this->request->getIPAddress();
-//				$this->sess_model->register($sess_id, $objStaff->stf_uid, $ip_addr);
-
 				$arrResult['code'] = RESULT_OK;
 				$arrResult['status'] = "success";
 			} else {									//차단
@@ -618,7 +637,7 @@ class Staff extends BaseController
 
 	public function staff_logout()
 	{
-		$this->session->destroy();
+		$this->sess_logout();
 
 		$arrResult['status'] = "success";
 		echo json_encode($arrResult);
@@ -635,6 +654,8 @@ class Staff extends BaseController
 			$result->status = "logout";
 		}
 		else {		
+			$this->sess_update();
+
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
 			
@@ -676,6 +697,8 @@ class Staff extends BaseController
 			$result->status = "logout";
 		}
 		else {		
+			$this->sess_update();
+
 			$staff_model = new Staff_Model();
 
 			$strUid = $this->session->uid;
@@ -730,6 +753,8 @@ class Staff extends BaseController
 			$result->status = "logout";
 		}
 		else {		
+			$this->sess_update();
+
 			$staff_model = new Staff_Model();
 
 			$strUid = $this->session->uid;
@@ -777,6 +802,8 @@ class Staff extends BaseController
 			$result->status = "logout";
 		}
 		else {		
+			$this->sess_update();
+
 			$staff_model = new Staff_Model();
 
 			$strUid = $this->session->uid;
@@ -823,7 +850,9 @@ class Staff extends BaseController
 		{
 			$result->status = "logout";
 		}
-		else {		
+		else {	
+			$this->sess_update();
+
 			$staff_model = new Staff_Model();
 
 			$strUid = $this->session->uid;
@@ -869,6 +898,7 @@ class Staff extends BaseController
 			$result->status = "logout";
 		}
 		else {		
+			$this->sess_update();
 			$staff_model = new Staff_Model();
 
 			$strUid = $this->session->uid;

@@ -55,4 +55,4 @@
 </div>
 
 
-<script src="<?php echo base_url('/assets/js/staff/design_connect_v1.js');?>"></script>
+<script src="<?php echo base_url('/assets/js/staff/design_connect.js');?>"></script>

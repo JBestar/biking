@@ -10,7 +10,7 @@ class Sess_Model extends Model {
     private $mBuilder;
     private $mTbName = "tbl0_staff_session";
     private $mTbColumn;
-
+    private $mJoinTbName = "tbl0_staff";
 
     function __construct()
     {
@@ -28,7 +28,8 @@ class Sess_Model extends Model {
     
     public function getById($sess_id){
         
-        try {             
+        try {       
+            
             $this->mBuilder ->select($this->mTbColumn)
                             ->where('sess_id', $sess_id)
                             ->getCompiledSelect(false);
@@ -36,7 +37,7 @@ class Sess_Model extends Model {
             return $query->getRow();
             
         } catch (\Exception $e) {  
-            return NULL;
+            return $e;
         }
         return NULL;
     }
@@ -76,7 +77,7 @@ class Sess_Model extends Model {
 
 
         $this->mBuilder->set('sess_time_last', 'NOW()', false);
-        $this->mBuilder->set('sess_pub_addr', $objSess->sess_pub_addr);
+        // $this->mBuilder->set('sess_pub_addr', $objSess->sess_pub_addr);
         
         $this->mBuilder->where('sess_id', $objSess->sess_id);
         return $this->mBuilder->update();   //if success, return true
@@ -97,7 +98,7 @@ class Sess_Model extends Model {
 
     function deleteLast(){
         
-        $tmLimit = date("Y-m-d H:i:s", strtotime("-30 minutes", time()));
+        $tmLimit = date("Y-m-d H:i:s", strtotime("-".MINUTE." minutes", time()));
 
         $this->mBuilder->where('sess_time_last < ', $tmLimit);
         return $this->mBuilder->delete();   //if success, return true

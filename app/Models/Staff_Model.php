@@ -584,6 +584,38 @@ class Staff_Model extends Model {
     }
 
 
+    function getParentIds($objStaff){
+        $arrParentId = [];
+
+        if(is_null($objStaff))
+            return $arrParentId;
+
+        if($objStaff->stf_level < LEVEL_EMPLOYEE || $objStaff->stf_level >= LEVEL_COMPANY)
+            return $arrParentId;
+
+
+        //총판
+        $objAgen = $this->getByFid($objStaff->stf_emp_fid);        
+        if(is_null($objAgen))
+            return $arrParentId;
+        if($objAgen->stf_level == LEVEL_COMPANY ){
+            array_push($arrParentId, $objAgen->stf_uid);
+            return $arrParentId;
+        }
+            
+    
+        //본사
+        $objComp = $this->getByFid($objAgen->stf_emp_fid);        
+        if(is_null($objComp))
+            return $arrParentId;
+        if($objComp->stf_level == LEVEL_COMPANY ){
+            array_push($arrParentId, $objComp->stf_uid);
+            return $arrParentId;
+        }
+
+        return $arrParentId;
+    }
+
 
     public function changeApp($cat_id1, $cat_id2){
 

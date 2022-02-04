@@ -80,6 +80,8 @@ defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125); // highest auto
 $base_url = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https://'.$_SERVER['HTTP_HOST'] : 'http://'.$_SERVER['HTTP_HOST']."".str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
 defined('BASEURL') || define('BASEURL', $base_url);
 
+defined('WSURL') || define('WSURL', "ws://".$_SERVER['SERVER_ADDR'].":8003");
+
 defined('DOWNLOADDIR')         || define('DOWNLOADDIR', "download");
 defined('DOWNLOADROOT')        || define('DOWNLOADROOT', ROOTPATH."public".DIRECTORY_SEPARATOR.DOWNLOADDIR.DIRECTORY_SEPARATOR);
 

@@ -76,17 +76,23 @@
       );
     }
     //사이드바의 선택상태 초기화 배렬을 반환해주는 함수
-    function getSidebarClass() {
+    function getSidebarClass($cat_name = '') {
 
-      return array(
-          'side_item_1' => '',
-          'side_item_2' => '',
-          'side_item_3' => '',
-          'side_item_4' => '',
-          'side_item_5' => '',
-          'side_item_6' => '',
-          'side_item_7' => ''
+      $arrMenu = array(
+        'side_item_1' => '',
+        'side_item_2' => '',
+        'side_item_3' => '',
+        'side_item_4' => '',
+        'side_item_5' => '',
+        'side_item_6' => '',
+        'side_item_7' => '',
+        'side_item_8' => 'no_view'
       );
+      if($cat_name == "luckystock"){
+        $arrMenu['side_item_8'] = '';  
+      }
+
+      return $arrMenu; 
     }
 
     function is_appLogin($logKey){ 

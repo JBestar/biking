@@ -9,6 +9,7 @@ use App\Models\appsvc\Member_Model;
 use App\Models\appsvc\Connect_Model;
 use App\Models\appsvc\Bet_Model;
 use App\Models\appsvc\Update_Model;
+use App\Models\appsvc\Note_Model;
 
 use App\Libraries\DesignConn;
 
@@ -32,7 +33,7 @@ class Apps extends BaseController
 		{
 			$this->response->redirect('/pages/login');			
 		}
-		else {
+		else {			
 			$this->response->redirect('/');
 		}
 		
@@ -45,6 +46,8 @@ class Apps extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$notice_model = new Notice_Model();
@@ -76,7 +79,7 @@ class Apps extends BaseController
 				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
-				$arrSidebar = getSidebarClass();
+				$arrSidebar = getSidebarClass($this->categoryName);
 				$arrSidebar['side_item_1'] = "sidebar-a-active";
 				$arrSidebar['stf_level'] = $objAdmin->stf_level;
 				$arrSidebar['cat_name'] = $objCat->cat_name;
@@ -103,6 +106,8 @@ class Apps extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$search_uid = $this->request->getVar('uid');
 
 			$config_model = new Config_Model();
@@ -135,7 +140,7 @@ class Apps extends BaseController
 				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
-				$arrSidebar = getSidebarClass();
+				$arrSidebar = getSidebarClass($this->categoryName);
 				$arrSidebar['side_item_2'] = "sidebar-a-active";
 				$arrSidebar['stf_level'] = $objAdmin->stf_level;
 				$arrSidebar['cat_name'] = $objCat->cat_name;
@@ -167,6 +172,8 @@ class Apps extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();			
 			$cat_model = new Category_Model();
@@ -213,7 +220,7 @@ class Apps extends BaseController
 				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
-				$arrSidebar = getSidebarClass();
+				$arrSidebar = getSidebarClass($objCat->cat_name);
 				$arrSidebar['side_item_2'] = "sidebar-a-active";
 				$arrSidebar['stf_level'] = $objAdmin->stf_level;
 				$arrSidebar['cat_name'] = $objCat->cat_name;
@@ -245,6 +252,8 @@ class Apps extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();			
 			$cat_model = new Category_Model();
@@ -278,7 +287,7 @@ class Apps extends BaseController
 				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
-				$arrSidebar = getSidebarClass();
+				$arrSidebar = getSidebarClass($objCat->cat_name);
 				$arrSidebar['side_item_2'] = "sidebar-a-active";
 				$arrSidebar['stf_level'] = $objAdmin->stf_level;
 				$arrSidebar['cat_name'] = $objCat->cat_name;
@@ -306,6 +315,8 @@ class Apps extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();			
 			$cat_model = new Category_Model();
@@ -339,7 +350,7 @@ class Apps extends BaseController
 				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
-				$arrSidebar = getSidebarClass();
+				$arrSidebar = getSidebarClass($objCat->cat_name);
 				$arrSidebar['side_item_2'] = "sidebar-a-active";
 				$arrSidebar['stf_level'] = $objAdmin->stf_level;
 				$arrSidebar['cat_name'] = $objCat->cat_name;
@@ -366,6 +377,8 @@ class Apps extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -399,7 +412,7 @@ class Apps extends BaseController
 				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
-				$arrSidebar = getSidebarClass();
+				$arrSidebar = getSidebarClass($objCat->cat_name);
 				$arrSidebar['side_item_3'] = "sidebar-a-active";
 				$arrSidebar['stf_level'] = $objAdmin->stf_level;
 				$arrSidebar['cat_name'] = $objCat->cat_name;
@@ -419,6 +432,71 @@ class Apps extends BaseController
 		}
 	}
 
+	public function note($app)
+	{
+		if(!is_login())
+		{
+			$this->response->redirect('/pages/login');			
+		}
+		else {
+			$this->sess_update();
+
+			$config_model = new Config_Model();
+			$staff_model = new Staff_Model();
+			$cat_model = new Category_Model();
+			
+
+			$objCat = $cat_model->getByName($app);
+			
+			$siteName = $config_model->getSiteName(); 
+
+			$strUid = $this->session->uid;
+			$objAdmin = $staff_model->getByUid($strUid);
+
+			$bPermit = true;
+			if(is_null($objAdmin) || is_null($objCat))
+				$bPermit = false;
+			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
+				$bPermit = false;
+			else if(!isPermitCategory($objAdmin, $objCat))
+				$bPermit = false;
+			else if($objCat->cat_name !== "luckystock"){
+				$bPermit = false;									
+			}
+
+			if($bPermit){
+				
+				$this->categoryId = $objCat->cat_id;	
+				$this->categoryName = $objCat->cat_name;
+				
+				$serverUrl = WSURL."?stf_session=".$this->session->session_id;
+				
+				//top-menu
+				$arrMenubar = getMenuClass();
+				$arrMenubar['site_name'] = $siteName;
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
+				$arrMenubar['admin'] = $objAdmin;
+				//sidebar
+				$arrSidebar = getSidebarClass($objCat->cat_name);
+				$arrSidebar['side_item_8'] = "sidebar-a-active";
+				$arrSidebar['stf_level'] = $objAdmin->stf_level;
+				$arrSidebar['cat_name'] = $objCat->cat_name;
+				//staff
+				$arrData['level'] = $objAdmin->stf_level;
+				$arrData['serverUrl'] = $serverUrl;
+				$arrData['cat_name'] = $objCat->cat_name;
+
+				echo view('header', $arrMenubar);
+				echo view('appsvc/sidebar', $arrSidebar);
+				echo view('appsvc/note', $arrData);
+				echo view('footer', array("site_name"=>$siteName) );
+				
+			} else {
+				
+				$this->response->redirect('/');	
+			}
+		}
+	}
 	
 
 	public function bethistory($app)
@@ -428,6 +506,8 @@ class Apps extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -457,7 +537,7 @@ class Apps extends BaseController
 				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
-				$arrSidebar = getSidebarClass();
+				$arrSidebar = getSidebarClass($objCat->cat_name);
 				$arrSidebar['side_item_4'] = "sidebar-a-active";
 				$arrSidebar['stf_level'] = $objAdmin->stf_level;
 				$arrSidebar['cat_name'] = $objCat->cat_name;
@@ -487,6 +567,8 @@ class Apps extends BaseController
 			$this->response->redirect('/pages/login');			
 		} 
 		else {
+			$this->sess_update();
+
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
@@ -515,7 +597,7 @@ class Apps extends BaseController
 				$arrMenubar['site_name'] = $siteName;
 				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
-				$arrSidebar = getSidebarClass();
+				$arrSidebar = getSidebarClass($objCat->cat_name);
 				$arrSidebar['side_item_5'] = "sidebar-a-active";
 				$arrSidebar['stf_level'] = $objAdmin->stf_level;
 				$arrSidebar['cat_name'] = $objCat->cat_name;
@@ -541,6 +623,7 @@ class Apps extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
 
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();			
@@ -593,7 +676,7 @@ class Apps extends BaseController
 						
 						if(strlen($file_name) < 1){
 							$iResult = 2;
-						} else if(in_array($file_ext,$extensions) === false){
+						} else if(in_array($file_ext, $extensions) === false){
 							$iResult = 2;
 							$errors[]="extension not allowed, please choose a Zip file.";
 						} else if(strlen($file_version) < 1){
@@ -710,7 +793,7 @@ class Apps extends BaseController
 				$arrMenubar['site_name'] = $siteName;
 				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
-				$arrSidebar = getSidebarClass();
+				$arrSidebar = getSidebarClass($objCat->cat_name);
 				$arrSidebar['side_item_5'] = "sidebar-a-active";
 				$arrSidebar['stf_level'] = $objAdmin->stf_level;
 				$arrSidebar['cat_name'] = $objCat->cat_name;
@@ -735,6 +818,7 @@ class Apps extends BaseController
 			$this->response->redirect('/pages/login');			
 		}
 		else {
+			$this->sess_update();
 
 			$config_model = new Config_Model();
 			$staff_model = new Staff_Model();			
@@ -765,7 +849,7 @@ class Apps extends BaseController
 				$arrMenubar['site_name'] = $siteName;
 				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
-				$arrSidebar = getSidebarClass();
+				$arrSidebar = getSidebarClass($objCat->cat_name);
 				$arrSidebar['side_item_6'] = "sidebar-a-active";
 				$arrSidebar['stf_level'] = $objAdmin->stf_level;
 				$arrSidebar['cat_name'] = $objCat->cat_name;
@@ -1457,7 +1541,9 @@ class Apps extends BaseController
 		{
 			$result->status = "logout";
 		}
-		else {		
+		else {	
+			$this->sess_update();	
+
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
 
@@ -2184,7 +2270,92 @@ class Apps extends BaseController
 		}
 	}
 
+	public function note_list($app){
+		
+		$result = new \StdClass;
+		if(!is_login())
+		{
+			$result->status = "logout";
+		}
+		else {	
+			$this->sess_update();
+				
+			$staff_model = new Staff_Model();
+			$cat_model = new Category_Model();
 
+			$objCat = $cat_model->getByName($app);
+
+			$strUid = $this->session->uid;
+			$objAdmin = $staff_model->getByUid($strUid);
+
+			$bPermit = true;
+			if(is_null($objAdmin) || is_null($objCat))
+				$bPermit = false;
+			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
+				$bPermit = false;
+			else if(!isPermitCategory($objAdmin, $objCat))
+				$bPermit = false;
+			else if($objCat->cat_name != "luckystock")
+				$bPermit = false;
+
+			if(!$bPermit){
+				$result->status = "fail";
+				$result->code = RESULT_STOP;
+			} else{
+				$this->categoryId = $objCat->cat_id;
+				$this->categoryName = $objCat->cat_name;
+				$note_model = new Note_Model($this->categoryName);
+
+				$arrEmpId = $staff_model->getParentIds($objAdmin);
+				
+				$arrData = [];
+				$arrNote = $note_model->gets();
+				if(!is_null($arrNote)){
+					foreach($arrNote as $objNote){
+						if($objNote->note_uid == $objAdmin->stf_uid){
+							$objNote->type = 1;
+						} else if(in_array($objNote->note_uid, $arrEmpId) || $objNote->stf_level > LEVEL_COMPANY){
+							$objNote->type = 0;
+						} else continue;
+						
+						array_push($arrData, $objNote);
+					}
+				}
+
+				$result->status = "success";
+				$result->data = $arrData;	
+
+				$user = new \StdClass;
+				$user->uid = $objAdmin->stf_uid;
+				$user->name = $objAdmin->stf_nickname;
+				$user->level = $objAdmin->stf_level;
+
+				$result->user = $user;
+			} 
+
+		}
+		echo json_encode($result);	
+
+
+	}
+
+	public function keepalive($app){
+		
+		$result = new \StdClass;
+		if(!is_login())
+		{
+			$result->status = "logout";
+		}
+		else {		
+
+			$this->sess_update();
+			
+			$result->status = "success";
+			
+		}
+		echo json_encode($result);	
+
+	}
 
 
 
@@ -2481,6 +2652,73 @@ class Apps extends BaseController
 		
 	}
 
+	
+	public function GetNote($app){
+		
+		$arrResult = [];
+		
+		$cat_model = new Category_Model();
+		
+		$objCat = $cat_model->getByName($app);
+		if(is_null($objCat)) {
+			$arrResult['result'] = APPRESULT_NO_APP;
+		} else {
+
+			$this->categoryId = $objCat->cat_id;
+			$this->categoryName = $objCat->cat_name;
+			
+			if(!is_appLogin($this->categoryName))
+			{
+				$arrResult['result'] = APPRESULT_LOGOUT;
+			}
+			else{
+
+				$staff_model = new Staff_Model();
+				$conn_model = new Connect_Model($this->categoryName);
+				$member_model = new Member_Model($this->categoryName);
+				
+				$uid = $this->session->uid;
+				$objMember = $member_model->getByUid($uid) ;
+				
+				$bPermit = true;
+				if(is_null($objMember))
+					$arrResult['result'] = APPRESULT_BLOCK;
+				else if($objMember->mb_state_active != PERMIT_OK || 
+					!$staff_model->isPermitMember($objMember, $this->categoryId) ||
+					$objCat->cat_stop == 1){
+					$arrResult['result'] = APPRESULT_BLOCK;
+				} else if($objCat->cat_name != "luckystock")
+					$arrResult['result'] = APPRESULT_BLOCK;
+				else{
+					
+					$note_model = new Note_Model($this->categoryName);
+					$objStaff = $staff_model->getByFid($objMember->mb_emp_fid);
+					$arrEmpId = $staff_model->getParentIds($objStaff);
+					
+					$arrData = [];
+					$arrNote = $note_model->gets();
+					if(!is_null($arrNote)){
+						foreach($arrNote as $objNote){
+							if($objNote->note_uid == $objStaff->stf_uid){
+								$objNote->type = 1;
+							} else if(in_array($objNote->note_uid, $arrEmpId) || $objNote->stf_level > LEVEL_COMPANY){
+								$objNote->type = 0;
+							} else continue;
+
+							array_push($arrData, $objNote);
+						}
+					}
+
+					$arrResult['result'] = APPRESULT_OK;
+					$arrResult['data'] = $arrData;	
+				} 
+			}
+		}
+		echo json_encode($arrResult);	
+
+
+	}
+
 	public function download($app)
 	{
 
@@ -2643,7 +2881,7 @@ class Apps extends BaseController
 						if(strlen($file_name) < 1){
 							$iResult = 2;
 							$errors="File not found";
-						}  else if(in_array($file_ext,$extensions) === true){
+						}  else if(in_array($file_ext, $extensions) === true){
 							$iResult = 3;
 							$errors="Extension not allowed";
 						} else if($file_size > 524288000){
@@ -2819,7 +3057,6 @@ class Apps extends BaseController
 
 		
 	}
-
 
 	//-------------------------------------------
 
