@@ -47,4 +47,4 @@
 </div>
 
 
-<script src="<?php echo base_url('/assets/js/appsvc/note.js');?>"></script>
+<script src="<?php echo base_url('/assets/js/appsvc/note.js?v=1');?>"></script>

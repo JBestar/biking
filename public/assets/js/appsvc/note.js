@@ -113,8 +113,8 @@ function addMessage(data, time, type = 0, uid = "") {
             } else if (data.reason == 1) {
                 // console.log("error!!");
             } else if (data.reason == 2) {
-                // console.log("logout!!");
-                location.reload();
+                alert("알림서비스에 접속할수 없습니다.");
+                // location.reload();
             }
         }
 
