@@ -759,8 +759,8 @@ class Apps extends BaseController
 								
 								$objUpdate = $update_model->getByVersion($file_version);
 								if(is_null($objUpdate))
-									$update_model->insertVersion($file_version, $file_name, $jsonContent, $objAdmin->stf_nickname);
-								else $update_model->updateByVersion($file_version, $file_name, $jsonContent, $objAdmin->stf_nickname);
+									$update_model->insertVersion($file_version, $file_name, $jsonContent, $objAdmin->stf_uid);
+								else $update_model->updateByVersion($file_version, $file_name, $jsonContent, $objAdmin->stf_uid);
 
 								$iResult = 1;
 							} 

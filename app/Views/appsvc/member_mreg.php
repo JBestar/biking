@@ -32,7 +32,7 @@
                 <td></td>
                 <td><label>VIP등급:</label></td>
                 <td>
-                <?php if($stf_level >=LEVEL_COMPANY) { ?>
+                <?php if($stf_level >= LEVEL_AGENCY) { ?>
                     <select id="mb_vip" style="width:165px;">
                 <?php } else { ?>
                     <select id="mb_vip" style="width:165px;" disabled>

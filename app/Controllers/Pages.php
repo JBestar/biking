@@ -21,8 +21,8 @@ class Pages extends BaseController
 
 	public function logout(){
 
-		//$this->sess_logout();
-		$this->session->destroy();
+		$this->sess_logout();
+		//$this->session->destroy();
 		$this->response->redirect('/pages/login');
 	}
 
