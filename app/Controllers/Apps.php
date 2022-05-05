@@ -2372,7 +2372,7 @@ class Apps extends BaseController
 		// result=5: 중복로그인
 		// result=6: DB오류
 		// result=7: url오류
-
+		$logHead = "<AppLogin>";
 		$uid = $this->request->getVar('username');
 		$pwd = $this->request->getVar('password');
 		$force = intval($this->request->getVar('force'));
@@ -2424,6 +2424,7 @@ class Apps extends BaseController
 							$conn_model->deleteByUid($objMember->mb_uid);
 
 						if($conn_model->register($sess_id, $objMember, $ip_address)) {
+							writeLog($logHead.$this->categoryName.">>userId=".$objMember->mb_uid.">>sessionId=".$sess_id);
 							//Last Time
 							$this->categoryName = $objCat->cat_name;
 							$member_model->updateLastTime($objMember->mb_uid);
@@ -2487,7 +2488,7 @@ class Apps extends BaseController
 		// result=3: 기간만기
 		// result=4: 계정차단
 		// result=10: 세션아웃
-
+		$logHead = "<ActiveKeep>";
 		$arrResult = [];
 		
 		$cat_model = new Category_Model();
@@ -2513,9 +2514,12 @@ class Apps extends BaseController
 				$uid = $this->session->uid;
 				$sess_id = $this->session->session_id;
 				$conn = $conn_model->getById($sess_id);
+				writeLog($logHead.$this->categoryName.">>userId=".$uid.">>sessionId=".$sess_id);
+
 				if(is_null($conn)){
 					$this->app_logout($app);
 					$arrResult['result'] = APPRESULT_LOGOUT;
+					writeLog($logHead.$this->categoryName.">>userId=".$uid.">>session=null");
 					
 				} else if($conn->sess_mb_uid != $uid){
 					$this->app_logout($app);
@@ -2530,6 +2534,7 @@ class Apps extends BaseController
 						$arrResult['result'] = APPRESULT_BLOCK;
 					} else if(strtotime($objMember->mb_time_limit) < $tmNow){
 						$arrResult['result'] = APPRESULT_EXPIRED;
+						writeLog($logHead.$this->categoryName.">>userId=".$uid.">>session=expired");
 					} else if($objMember->mb_state_active != PERMIT_OK || 
 							!$staff_model->isPermitMember($objMember, $this->categoryId) ||
 							$objCat->cat_stop == 1){
@@ -2587,6 +2592,7 @@ class Apps extends BaseController
 						if(!is_null($lastUpdate)) 
 							$arrResult['version'] = $lastUpdate->update_version;
 						else $arrResult['version'] = "";
+						$arrResult['vip'] = strval($objMember->mb_vip);
 						
 						if($this->categoryName == "luckyfuture" || $this->categoryName == "reantek")		//럭키퓨처
 							$arrResult['order'] = $objMember->mb_prop_1;

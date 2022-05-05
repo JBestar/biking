@@ -265,5 +265,23 @@
     }
 
 
+    function writeLog($contenet){ 
+    
+      if(!LOG_WRITE)
+          return;
+  
+      $tmNow = time() ;
+      $nHour = date("G",$tmNow);
+      $nMin = date("i",$tmNow);
+      $nSec = date("s",$tmNow);
+  
+      $sDate = date( 'Y-m-d', $tmNow);
+      $fLog = fopen(LOG_FILE.$sDate, "a") ;
+  
+      $tContent = "[".$nHour.":".$nMin.":".$nSec."] ".$contenet."\r\n";
+  
+      fputs($fLog, $tContent);
+      fclose($fLog);
+  }
 
 ?>
