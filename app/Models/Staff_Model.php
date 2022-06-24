@@ -643,7 +643,8 @@ class Staff_Model extends Model {
 
     public function resetApp($category){
 
-        $stf_app = "stf_app_".$category;
+
+        $stf_app = "stf_app_".($category<10?"0".$category:$category);
 
         $this->mBuilder->set($stf_app, 0);
         

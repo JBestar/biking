@@ -58,4 +58,4 @@
     </div>
 </div>
 
-<script src="<?php echo base_url('/assets/js/staff/admin_edit.js');?>"></script>
+<script src="<?php echo base_url('/assets/js/staff/admin_edit.js?t=').time();?>"></script>
