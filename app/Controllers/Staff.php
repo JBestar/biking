@@ -756,6 +756,7 @@ class Staff extends BaseController
 			$this->sess_update();
 
 			$staff_model = new Staff_Model();
+			$cat_model = new Category_Model();
 
 			$strUid = $this->session->uid;
 			$objAdmin = $staff_model->getByUid($strUid);
@@ -775,8 +776,30 @@ class Staff extends BaseController
 				$result->status = "fail";
 				$result->code = RESULT_STOP;
 			} else{
-				
-				$bResult = $staff_model->deleteAllByEmp($objRqStaff);
+				$arrCat = $cat_model->getAll();
+
+				$arrStaff = $staff_model->getStaffByEmp($objRqStaff->stf_fid, $objRqStaff->stf_level, $objRqStaff->stf_level, "", true);
+				if(!is_null($arrStaff)){
+					$arrEmpId = [];
+					if($objRqStaff->stf_level == LEVEL_EMPLOYEE){
+						array_push($arrEmpId, $objRqStaff->stf_fid);
+					}
+					$arrStaffId[0] = $objRqStaff->stf_fid;
+					foreach($arrStaff as $objChild){
+						if($objChild->stf_level == LEVEL_EMPLOYEE)
+							array_push($arrEmpId, $objChild->stf_fid);
+
+                        array_push($arrStaffId, $objChild->stf_fid);
+					}
+					if($staff_model->deleteByFids($arrStaffId)){
+						$bResult = true;
+						foreach($arrCat as $objCat){
+							$member_model = new Member_Model($objCat->cat_name);
+							$member_model->deleteByFid($arrEmpId);
+						}
+					}
+				} 
+
 				if($bResult)
 					$result->status = "success";
 				else {

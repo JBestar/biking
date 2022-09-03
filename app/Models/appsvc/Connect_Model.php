@@ -227,13 +227,13 @@ class Connect_Model extends Model {
     }
 
 
-    function hasRepeatUid($mb_uid) {
+    function getRepeatUid($mb_uid) {
         $arrConn = $this->getByUid($mb_uid);
         if(is_null($arrConn))
-            return false;
+            return null;
         if(count($arrConn) < 1)
-            return false;
-        return true;
+            return null;
+        return $arrConn[0];
     }
 
 

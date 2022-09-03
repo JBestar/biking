@@ -201,10 +201,10 @@ class Member_Model extends Model {
         return $this->mBuilder->update();   //if success, return true
     }
 
-    function deleteByFid($arrEmpId, $mb_fid){
-        
-        $this->mBuilder->where('mb_fid', $mb_fid)
-                       ->whereIn('mb_emp_fid', $arrEmpId);
+    function deleteByFid($arrEmpId, $mb_fid=0){
+        if($mb_fid > 0)
+            $this->mBuilder->where('mb_fid', $mb_fid);
+        $this->mBuilder->whereIn('mb_emp_fid', $arrEmpId);
         return $this->mBuilder->delete();   //if success, return true
     }
 

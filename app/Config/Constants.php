@@ -82,7 +82,7 @@ defined('BASEURL') || define('BASEURL', $base_url);
 
 defined('WSURL') || define('WSURL', "ws://".$_SERVER['SERVER_ADDR'].":8003");
 
-defined('LOG_WRITE')            || define('LOG_WRITE', false);
+defined('LOG_WRITE')            || define('LOG_WRITE', true);
 defined('LOG_FILE')             || define('LOG_FILE', ROOTPATH."logs".DIRECTORY_SEPARATOR);
 
 defined('DOWNLOADDIR')         || define('DOWNLOADDIR', "download");

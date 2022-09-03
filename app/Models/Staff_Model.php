@@ -312,6 +312,12 @@ class Staff_Model extends Model {
         return $this->mBuilder->delete();   //if success, return true
     }
 
+    function deleteByFids($arrEmpId){
+        
+        $this->mBuilder->whereIn('stf_fid', $arrEmpId);
+
+        return $this->mBuilder->delete();   //if success, return true
+    }
     
     function deleteAllByEmp($objStaff){
         if(is_null($objStaff))

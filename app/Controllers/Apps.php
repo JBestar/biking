@@ -2405,7 +2405,7 @@ class Apps extends BaseController
 				} else {
 					
 					$sess_id = $this->session->session_id;
-					$bRepeatConn = $conn_model->hasRepeatUid($objMember->mb_uid);
+					$connRepeat = $conn_model->getRepeatUid($objMember->mb_uid);
 
 					$tmNow = time();
 					$tmLimit = strtotime($objMember->mb_time_limit);
@@ -2415,12 +2415,14 @@ class Apps extends BaseController
 							!$staff_model->isPermitMember($objMember, $this->categoryId) ||
 							$objCat->cat_stop == 1) {
 						$arrResult['result'] = APPRESULT_BLOCK;
-					} else if($force != 1 && $bRepeatConn){
+					} else if($force != 1 && !is_null($connRepeat)){
+						$arrResult['result'] = APPRESULT_DUPLICATE;
+					} else if($force == 1 && !is_null($connRepeat) && $connRepeat->sess_pub_addr !== $ip_address){
 						$arrResult['result'] = APPRESULT_DUPLICATE;
 					} else if($this->categoryName == "luckysheet" && $objMember->mb_prop_1 == 1 ){
 						$arrResult['result'] = APPRESULT_BLOCK;
 					} else {
-						if($force == 1 && $bRepeatConn)
+						if($force == 1 && !is_null($connRepeat))
 							$conn_model->deleteByUid($objMember->mb_uid);
 
 						if($conn_model->register($sess_id, $objMember, $ip_address)) {
