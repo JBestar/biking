@@ -55,5 +55,5 @@
     }
 </style>
 
-<script src="<?php echo base_url('/assets/js/appsvc/connect-common_v1.js');?>"></script>
+<script src="<?php echo base_url('/assets/js/appsvc/connect-common.js');?>"></script>
 <script src="<?php echo base_url('/assets/js/appsvc/connect.js');?>"></script>

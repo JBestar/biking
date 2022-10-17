@@ -2426,7 +2426,7 @@ class Apps extends BaseController
 							$conn_model->deleteByUid($objMember->mb_uid);
 
 						if($conn_model->register($sess_id, $objMember, $ip_address)) {
-							writeLog($logHead.$this->categoryName.">>userId=".$objMember->mb_uid.">>sessionId=".$sess_id);
+							writeLog($logHead.$this->categoryName.">>userId=".$objMember->mb_uid.">>sessionId=".$sess_id.">>ip=".$ip_address);
 							//Last Time
 							$this->categoryName = $objCat->cat_name;
 							$member_model->updateLastTime($objMember->mb_uid);
@@ -2516,7 +2516,8 @@ class Apps extends BaseController
 				$uid = $this->session->uid;
 				$sess_id = $this->session->session_id;
 				$conn = $conn_model->getById($sess_id);
-				writeLog($logHead.$this->categoryName.">>userId=".$uid.">>sessionId=".$sess_id);
+				$ip_addres = $this->request->getIPAddress();
+				writeLog($logHead.$this->categoryName.">>userId=".$uid.">>sessionId=".$sess_id.">>ip=".$ip_addres);
 
 				if(is_null($conn)){
 					$this->app_logout($app);
@@ -2547,7 +2548,7 @@ class Apps extends BaseController
 						$conn = new \StdClass;
 						$conn->sess_id = $sess_id;
 						$conn->sess_mb_uid = $uid;
-						$conn->sess_pub_addr = $this->request->getIPAddress();
+						$conn->sess_pub_addr = $ip_addres;
 						$conn->sess_running = intval($this->request->getVar('running'));
 						$conn->sess_betting_domain = strval($this->request->getVar('betting_domain'));
 						$conn->sess_betting_user = strval($this->request->getVar('betting_user'));
