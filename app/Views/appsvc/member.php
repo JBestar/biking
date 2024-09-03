@@ -53,5 +53,5 @@
 </div>
 
 
-<script src="<?php echo base_url('/assets/js/appsvc/member-common.js');?>"></script>
-<script src="<?php echo base_url('/assets/js/appsvc/member.js');?>"></script>
+<script src="<?php echo base_url('/assets/js/appsvc/member-common.js?v=1');?>"></script>
+<script src="<?php echo base_url('/assets/js/appsvc/member.js?v=1');?>"></script>

@@ -1591,6 +1591,7 @@ class Apps extends BaseController
 				$result->data = $arrConnect;	
 				$result->act = $iAct;	
 				$result->field = $designConn->sortedFdKey($this->categoryId);	
+				$result->count = $connect_model->searchCount($arrEmpId, $search);
 			} 
 
 		}

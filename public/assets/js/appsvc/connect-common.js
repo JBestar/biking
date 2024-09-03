@@ -81,6 +81,7 @@ function requestConnector() {
             // console.log(jResult);
             if (jResult.status == "success") {
                 showConnector(jResult.data, jResult.field, jResult.act);
+                $('#connector_count').text(jResult.count);
             } else if (jResult.status == "fail") {
                 alert('잘못된 계정정보입니다.');
 

@@ -45,6 +45,9 @@
         }
     }
  
+    if(tHtml.length<1){
+        tHtml = "<tr><td colspan='100'>자료가 없습니다.</td></tr>";
+    }
     $("#tb-data-id").html(tHtml);
     addTbEventListner();
  }

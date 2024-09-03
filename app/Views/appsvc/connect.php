@@ -25,6 +25,7 @@
                 
             </tbody>
         </Table>
+        <div style="padding:5px 0px 0px 5px; font-size:14px;">접속자수: <span id="connector_count" style="font-weight:bold;"></span>개</div>
         <div class="list-page-div" id="list-page" style="display:none;">
             <div class="pagination">
                 <button class="list-page-button" id="page-prev" onclick="prevPage()"><<</button>
@@ -55,5 +56,5 @@
     }
 </style>
 
-<script src="<?php echo base_url('/assets/js/appsvc/connect-common.js?v=1');?>"></script>
-<script src="<?php echo base_url('/assets/js/appsvc/connect.js?v=1');?>"></script>
+<script src="<?php echo base_url('/assets/js/appsvc/connect-common.js?v=2');?>"></script>
+<script src="<?php echo base_url('/assets/js/appsvc/connect.js?v=2');?>"></script>
