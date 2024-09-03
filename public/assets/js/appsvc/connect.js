@@ -1,6 +1,6 @@
 
 
- function showConnector(arrSession, arrField){
+ function showConnector(arrSession, arrField, act=0){
     var tHtml = "";
     if(arrSession != null && arrSession.length > 0 && arrField != null){
        
@@ -17,7 +17,7 @@
             
             tHtml += "<td>"+(parseInt(idx)+firstIdx+1).toString()+"</td>";
             for(var idy in arrField){
-                tHtml += getTdHtml(arrField[idy], arrSession[idx]);
+                tHtml += getTdHtml(arrField[idy], arrSession[idx], act);
             }
             
             tHtml += "</tr>";

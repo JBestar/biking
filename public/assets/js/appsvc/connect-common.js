@@ -1,7 +1,9 @@
 $(document).ready(function() {
 
     requestPage();
-    loop();
+
+    setTimeout(function() { loop(); }, 60000);
+
 });
 
 
@@ -78,7 +80,7 @@ function requestConnector() {
         success: function(jResult) {
             // console.log(jResult);
             if (jResult.status == "success") {
-                showConnector(jResult.data, jResult.field);
+                showConnector(jResult.data, jResult.field, jResult.act);
             } else if (jResult.status == "fail") {
                 alert('잘못된 계정정보입니다.');
 
@@ -92,7 +94,7 @@ function requestConnector() {
     });
 }
 
-function getTdHtml(field, objSess) {
+function getTdHtml(field, objSess, act) {
     tHtml = "";
     
     switch(field){
@@ -118,7 +120,7 @@ function getTdHtml(field, objSess) {
             tHtml +="</td>"; 
             break;
         case "real_money":
-            if(parseInt(objSess.sess_running) == 1 && parseInt(objSess.sess_betting_real)==1){
+            if(parseInt(objSess.sess_running) == 1 && (act==1 || parseInt(objSess.sess_betting_real)==1) ){
                 money_begin = parseInt(objSess.sess_money_begin);
                 money_current = parseInt(objSess.sess_money_current);
                 tHtml += (money_current + 100000) < money_begin ? "<td class=\"red left\">" : "<td class=\"left\">" ;
@@ -132,7 +134,7 @@ function getTdHtml(field, objSess) {
             tHtml +="</td>";
             break;
         case "virt_money":
-            if(parseInt(objSess.sess_running) == 1 && parseInt(objSess.sess_betting_real)!=1){
+            if(parseInt(objSess.sess_running) == 1 && (act==1 || parseInt(objSess.sess_betting_real)!=1) ){
                 money_begin = parseInt(objSess.sess_virtual_begin);
                 money_current = parseInt(objSess.sess_virtual_current);
                 tHtml += (money_current + 100000) < money_begin ? "<td class=\"red left\">" : "<td class=\"left\">" ;

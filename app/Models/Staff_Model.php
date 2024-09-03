@@ -193,6 +193,23 @@ class Staff_Model extends Model {
         return RESULT_FAIL;
     }
 
+    
+    public function getTopStaffByFid($fid)
+    {
+        $strTbColum = " ".implode(", ", $this->mTbColumn);
+        $strTbRColum = " r.".implode(", r.", $this->mTbColumn);
+
+        $strSQL = 'WITH RECURSIVE tbmember ('.$strTbColum.') AS';
+        $strSQL .= ' ( SELECT '.$strTbColum.' FROM '.$this->mTbName." WHERE stf_fid = '".$fid."'";
+        $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->mTbName.' r ';
+        $strSQL .= ' INNER JOIN tbmember ON r.stf_fid = tbmember.stf_emp_fid )';
+        $strSQL .= ' SELECT * FROM tbmember ';
+        
+        $strSQL .=  " ORDER BY stf_level DESC ";
+        // writeLog($strSQL);
+        return $this->mDb->query($strSQL)->getResult();
+    }
+
     function modifyByFid($stf_fid, $arrData){
         
         
@@ -334,7 +351,7 @@ class Staff_Model extends Model {
     public function login($uid, $pwd){
         
         try { 
-            $where = "stf_uid = '".$uid."' AND stf_pwd = '".$pwd."' ";
+            $where = "stf_uid = ".$this->mDb->escape($uid)." AND stf_pwd = ".$this->mDb->escape($pwd)." ";
 
             $this->mBuilder ->select($this->mTbColumn)
                             ->where($where)
@@ -561,6 +578,28 @@ class Staff_Model extends Model {
         return $bPermit;
     }
 
+
+    function isPermitStaff($objStaff, $category=0){
+        if(is_null($objStaff))
+            return false;
+
+        if($objStaff->stf_level > LEVEL_COMPANY)
+            return true;
+
+        $arrStaff = $this->getTopStaffByFid($objStaff->stf_fid);
+        if(count($arrStaff) < 1)
+            return false;
+
+        if($arrStaff[0]->stf_level != LEVEL_COMPANY)
+            return false;
+
+        foreach($arrStaff as $staff){
+            if(getStaffState($staff, $category) === false)
+                return false;
+        }
+        
+        return true;
+    }
 
     function isPermitMember($objMember, $category){
         if(is_null($objMember))

@@ -18,7 +18,7 @@
                 <tr>
                     <td></td>
                     <td><label>업로드버전:</label></td>
-                    <td><input type="text" id="upload-version" name="upload-version" style="width:200px;">
+                    <td><input type="text" id="upload-version" name="upload-version" style="width:200px;" value="<?=$last_version?>">
                         <?php if(strlen($last_version) > 0) { ?><br><br>
                         <label>(최신버전은 <?=$last_version?>입니다.)</label>
                         <?php } else { ?>

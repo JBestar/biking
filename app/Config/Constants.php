@@ -88,6 +88,8 @@ defined('LOG_FILE')             || define('LOG_FILE', ROOTPATH."logs".DIRECTORY_
 defined('DOWNLOADDIR')         || define('DOWNLOADDIR', "download");
 defined('DOWNLOADROOT')        || define('DOWNLOADROOT', ROOTPATH."public".DIRECTORY_SEPARATOR.DOWNLOADDIR.DIRECTORY_SEPARATOR);
 
+defined('CONNECT_TIMEOUT')       || define('CONNECT_TIMEOUT', "10");
+
 defined('LEVEL_ADMIN')         || define('LEVEL_ADMIN', 10);
 defined('LEVEL_COMPANY')       || define('LEVEL_COMPANY', 9);
 defined('LEVEL_AGENCY')        || define('LEVEL_AGENCY', 8);
@@ -96,6 +98,9 @@ defined('LEVEL_USER')          || define('LEVEL_USER', 1);
 
 //permit state
 defined('PERMIT_OK')           || define('PERMIT_OK', 1);
+//state
+defined('STATE_DISABLE')       || define('STATE_DISABLE', 0);
+defined('STATE_ACTIVE')        || define('STATE_ACTIVE', 1);
 
 //
 defined('RESULT_OK')           || define('RESULT_OK', 1);

@@ -98,7 +98,7 @@ class Sess_Model extends Model {
 
     function deleteLast(){
         
-        $tmLimit = date("Y-m-d H:i:s", strtotime("-".MINUTE." minutes", time()));
+        $tmLimit = date("Y-m-d H:i:s", strtotime("-".CONNECT_TIMEOUT." minutes", time()));
 
         $this->mBuilder->where('sess_time_last < ', $tmLimit);
         return $this->mBuilder->delete();   //if success, return true

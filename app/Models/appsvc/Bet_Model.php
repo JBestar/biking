@@ -124,9 +124,7 @@ class Bet_Model extends Model {
 
             $where = "bet_fid > '0' ";
             if(strlen($arrRqData['search']) > 0){
-                if($category_name=="luckyeval")
-                    $where .= " AND bet_mb_uid LIKE '%".$arrRqData['search']."%' ";    
-                else $where .= " AND (bet_mb_uid LIKE '%".$arrRqData['search']."%' OR bet_guser LIKE '%".$arrRqData['search']."%')";    
+                $where .= " AND (bet_mb_uid LIKE '%".$arrRqData['search']."%' OR bet_guser LIKE '%".$arrRqData['search']."%')";    
             }
             if(strlen($arrRqData['from']) > 0){
                 $where .= " AND bet_date >= '".$arrRqData['from']."' ";
@@ -138,10 +136,6 @@ class Bet_Model extends Model {
             $tbColumns = ['bet_mb_uid', 'bet_domain', 'bet_guser', 'mb_emp_fid'];
 
             $groupBy = ['bet_mb_uid', 'bet_guser'];
-            if($category_name=="luckyeval"){
-                $tbColumns = ['bet_mb_uid', 'bet_domain', 'mb_emp_fid'];
-                $groupBy = ['bet_mb_uid'];
-            }
 
             $this->mBuilder ->select($tbColumns)   
                             ->join($this->mJoinTbName, $this->mJoinTbName.'.mb_uid = '.$this->mTbName.'.bet_mb_uid')                         
@@ -174,9 +168,7 @@ class Bet_Model extends Model {
 
             $where = "bet_fid > '0' ";
             if(strlen($arrRqData['search']) > 0){
-                if($category_name=="luckyeval")
-                    $where .= " AND bet_mb_uid LIKE '%".$arrRqData['search']."%' ";    
-                else $where .= " AND (bet_mb_uid LIKE '%".$arrRqData['search']."%' OR bet_guser LIKE '%".$arrRqData['search']."%')";    
+                $where .= " AND (bet_mb_uid LIKE '%".$arrRqData['search']."%' OR bet_guser LIKE '%".$arrRqData['search']."%')";    
             }
             if(strlen($arrRqData['from']) > 0){
                 $where .= " AND bet_date >= '".$arrRqData['from']."' ";
@@ -188,11 +180,6 @@ class Bet_Model extends Model {
             $tbColumns = ['bet_mb_uid', 'bet_domain', 'bet_guser', 'mb_emp_fid'];
 
             $groupBy = ['bet_mb_uid', 'bet_guser'];
-            if($category_name=="luckyeval"){
-                $tbColumns = ['bet_mb_uid', 'bet_domain', 'mb_emp_fid'];
-                $groupBy = ['bet_mb_uid'];
-            }
-                
 
             $this->mBuilder ->select($tbColumns) 
                             ->selectMin('bet_date', 'bet_date_from')   

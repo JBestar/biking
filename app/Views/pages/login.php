@@ -13,6 +13,15 @@
 	    <script src="/assets/js/lib/jquery-1.12.4.min.js"></script>
 	
         <script src="/assets/js/util.js?v=1"></script>
+        <style>
+            <?php if(array_key_exists('login.img', $_ENV)): ?>
+                .ibg {
+                    background: #000 url(/assets/img/<?=$_ENV['login.img']?>?v=1)no-repeat;
+                    background-position: 50%;
+                    background-size: cover;
+                }
+            <?php endif ?>
+        </style>
     </head>
 
     <body>

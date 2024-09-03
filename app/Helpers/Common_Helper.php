@@ -8,7 +8,7 @@
       else return false;  
   	}
 
-    function isPermitCategory($objAdmin, $objCat){
+    function getCategoryState($objAdmin, $objCat){
       if(is_null($objAdmin) || is_null($objCat)) 
         return false;
       $state_active = 0;
@@ -50,11 +50,37 @@
       return $state_active==1?true:false;
     }
     
-    function getPermitedCategories($categories, $objAdmin, $category=0){
+    function isPermitCategory($arrStaff, $objCat){
+      // writeLog("isPermitCategory");
+      $bPermit = true;
+      if(is_null($arrStaff) || count($arrStaff) < 1 )
+        $bPermit = false;
+      else if($arrStaff[0]->stf_level > LEVEL_COMPANY)
+        $bPermit = true;
+      else if($arrStaff[0]->stf_level < LEVEL_COMPANY)
+        $bPermit = false;
+      else {
+        foreach($arrStaff as $staff){
+          writeLog($staff->stf_uid);
+          if(getCategoryState($staff, $objCat) != STATE_ACTIVE){
+            $bPermit = false;
+            break;
+          }
+        }  
+      }
+      return $bPermit;
+    }
+
+
+    function getPermitedCategories($categories, $arrStaff, $category=0){
       $arrEnCat = [];
+      // writeLog("getPermitedCategories");
+
       foreach($categories as $objCat){
-        if(isPermitCategory($objAdmin, $objCat))
+        if(isPermitCategory($arrStaff, $objCat)){
+          // writeLog($objCat->cat_name);
           array_push($arrEnCat, convertEnCat($objCat, $category));  
+        }
       }
       return $arrEnCat;
     }
@@ -142,6 +168,17 @@
       return $bAppOn;
     }
 
+
+    function getStaffState($objStaff, $category){
+      if(is_null($objStaff))
+            return false;
+        else if($objStaff->stf_state_active != STATE_ACTIVE)
+            return false;
+        else if($category > 0 && isAppOn($objStaff, $category) != PERMIT_OK) {
+            return false;  
+        }
+        return true;
+    }
 
     function deleteDir($dir)
     {

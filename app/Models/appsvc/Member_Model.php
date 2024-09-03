@@ -273,7 +273,7 @@ class Member_Model extends Model {
     public function login($uid, $pwd){
         
         try { 
-            $where = "mb_uid = '".$uid."' AND mb_pwd = '".$pwd."' ";
+            $where = "mb_uid = ".$this->mDb->escape($uid)." AND mb_pwd = ".$this->mDb->escape($pwd)." ";
 
             $this->mBuilder ->select($this->mTbColumn)
                             ->where($where)

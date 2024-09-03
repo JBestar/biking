@@ -65,7 +65,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			
 
@@ -76,7 +76,7 @@ class Apps extends BaseController
 				//top-menu 
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid), $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass($this->categoryName);
@@ -126,7 +126,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			
 
@@ -137,7 +137,7 @@ class Apps extends BaseController
 				//top-menu
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid), $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass($this->categoryName);
@@ -154,8 +154,6 @@ class Apps extends BaseController
 				echo view('appsvc/sidebar', $arrSidebar );
 				if($this->categoryName == "luckyfuture" || $this->categoryName == "reantek")
 					echo view('appsvc/member-luckyfuture', $arrData);
-				else if($this->categoryName == "luckysheet")
-					echo view('appsvc/member-luckysheet', $arrData);	
 				else echo view('appsvc/member', $arrData);	
 				echo view('footer', array("site_name"=>$siteName) );
 				
@@ -191,7 +189,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			
 			$objMember = NULL;
@@ -217,7 +215,7 @@ class Apps extends BaseController
 				//top-menu
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid), $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass($objCat->cat_name);
@@ -271,7 +269,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			
 
@@ -284,7 +282,7 @@ class Apps extends BaseController
 				//top-menu
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid), $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass($objCat->cat_name);
@@ -334,7 +332,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			
 
@@ -347,7 +345,7 @@ class Apps extends BaseController
 				//top-menu
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid), $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass($objCat->cat_name);
@@ -396,7 +394,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			
 			if($bPermit){
@@ -409,7 +407,7 @@ class Apps extends BaseController
 				//top-menu
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid), $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass($objCat->cat_name);
@@ -458,7 +456,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			else if($objCat->cat_name !== "luckystock"){
 				$bPermit = false;									
@@ -474,7 +472,7 @@ class Apps extends BaseController
 				//top-menu
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid), $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass($objCat->cat_name);
@@ -524,7 +522,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if($bPermit){
@@ -534,7 +532,7 @@ class Apps extends BaseController
 				//top-menu
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid), $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass($objCat->cat_name);
@@ -548,9 +546,7 @@ class Apps extends BaseController
 
 				echo view('header', $arrMenubar);
 				echo view('appsvc/sidebar', $arrSidebar);
-				if($this->categoryName == "luckyeval")
-					echo view('appsvc/bethistory-luckyeval', $arrData);
-				else echo view('appsvc/bethistory', $arrData);	
+				echo view('appsvc/bethistory', $arrData);	
 				echo view('footer', array("site_name"=>$siteName) );
 			} else {
 				$this->response->redirect('/');	
@@ -585,7 +581,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if($bPermit){
@@ -595,7 +591,7 @@ class Apps extends BaseController
 
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid), $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				$arrSidebar = getSidebarClass($objCat->cat_name);
 				$arrSidebar['side_item_5'] = "sidebar-a-active";
@@ -641,7 +637,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if($bPermit){
@@ -791,7 +787,7 @@ class Apps extends BaseController
 
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid), $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				$arrSidebar = getSidebarClass($objCat->cat_name);
 				$arrSidebar['side_item_5'] = "sidebar-a-active";
@@ -836,7 +832,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if($bPermit){
@@ -847,7 +843,7 @@ class Apps extends BaseController
 
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin, $this->categoryId);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid), $this->categoryId);
 				$arrMenubar['admin'] = $objAdmin;
 				$arrSidebar = getSidebarClass($objCat->cat_name);
 				$arrSidebar['side_item_6'] = "sidebar-a-active";
@@ -889,7 +885,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if($bPermit){
@@ -957,7 +953,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			else if(is_null($objRqStaff))
 				$bPermit = false;
@@ -1011,7 +1007,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			else if(is_null($objRqStaff))
 				$bPermit = false;
@@ -1074,7 +1070,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;								
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -1125,7 +1121,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;	
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -1177,7 +1173,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			
 			if($bPermit) 
@@ -1237,7 +1233,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -1298,7 +1294,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -1370,7 +1366,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -1433,7 +1429,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -1502,7 +1498,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			else if(is_null($objRqStaff))
 				$bPermit = false;
@@ -1559,7 +1555,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			else if(is_null($objRqStaff))
 				$bPermit = false;
@@ -1580,6 +1576,10 @@ class Apps extends BaseController
 				$arrEmp = $staff_model->getCategoryStaff($objRqStaff, LEVEL_EMPLOYEE, $this->categoryId);
 				$arrConnect = $connect_model->searchList($arrEmpId, $page, $cntPer, $search);
 
+				$iAct = STATE_DISABLE;
+				if(array_key_exists('app.connect', $_ENV) && $_ENV['app.connect'] == STATE_ACTIVE)
+					$iAct = STATE_ACTIVE;
+
 				if(!is_null($arrConnect) && !is_null($arrEmp)){
 					foreach($arrConnect as $objConnect){
 						foreach($arrEmp as $objEmp){
@@ -1594,6 +1594,7 @@ class Apps extends BaseController
 				
 				$result->status = "success";
 				$result->data = $arrConnect;	
+				$result->act = $iAct;	
 				$result->field = $designConn->sortedFdKey($this->categoryId);	
 			} 
 
@@ -1632,7 +1633,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			else if(is_null($objRqStaff))
 				$bPermit = false;
@@ -1688,7 +1689,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			else if(is_null($objRqStaff))
 				$bPermit = false;
@@ -1750,7 +1751,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			
 			if(!$bPermit){
@@ -1793,7 +1794,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -1840,7 +1841,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -1887,7 +1888,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -1946,7 +1947,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -1993,7 +1994,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -2053,7 +2054,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -2105,7 +2106,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -2178,7 +2179,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if(!$bPermit){
@@ -2230,7 +2231,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_ADMIN)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 
 			if($bPermit){
@@ -2293,7 +2294,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			else if($objAdmin->stf_level < LEVEL_EMPLOYEE)
 				$bPermit = false;
-			else if(!isPermitCategory($objAdmin, $objCat))
+			else if(!isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat))
 				$bPermit = false;
 			else if($objCat->cat_name != "luckystock")
 				$bPermit = false;
@@ -2517,7 +2518,7 @@ class Apps extends BaseController
 				$sess_id = $this->session->session_id;
 				$conn = $conn_model->getById($sess_id);
 				$ip_addres = $this->request->getIPAddress();
-				writeLog($logHead.$this->categoryName.">>userId=".$uid.">>sessionId=".$sess_id.">>ip=".$ip_addres);
+				// writeLog($logHead.$this->categoryName.">>userId=".$uid.">>sessionId=".$sess_id.">>ip=".$ip_addres);
 
 				if(is_null($conn)){
 					$this->app_logout($app);
@@ -2823,6 +2824,8 @@ class Apps extends BaseController
 					$pos = strpos($filePath, $findDir);
 					if($pos !== false){
 						$handle = fopen($filePath, "r");
+						if(filesize($filePath) <= 0)
+							continue;
 						$contents = fread($handle, filesize($filePath));
 						fclose($handle);
 						
@@ -3009,8 +3012,6 @@ class Apps extends BaseController
 		}
 
 		$bAddMode = false;
-		if($this->categoryName == "luckyeval")
-			$bAddMode = true;
 		switch($table)
 		{
 			case 1:

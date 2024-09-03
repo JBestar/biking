@@ -189,6 +189,11 @@ class Forge_Model extends Model {
         $primaryKey = 'update_id';
         if(!$this->createDbTable($tbUpdate, $fields, $primaryKey))
             return false;
+
+
+
+
+            
         return true;
             
     }

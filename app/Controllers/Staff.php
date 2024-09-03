@@ -53,7 +53,7 @@ class Staff extends BaseController
 					foreach($categories as $objCat){
 						if(strlen($objCat->cat_name) < 1)
 							continue;
-						if(isPermitCategory($objAdmin, $objCat)){
+						if(isPermitCategory($staff_model->getTopStaffByFid($objAdmin->stf_fid), $objCat)){
 							$redirectUrl = "/".$objCat->cat_name."/member";
 							break;
 						}
@@ -99,7 +99,7 @@ class Staff extends BaseController
 				$arrMenubar = getMenuClass();
 				$arrMenubar['menu_item_1'] = "menu-item-active";
 				$arrMenubar['site_name'] = $siteName;  
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid));
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass();
@@ -155,7 +155,7 @@ class Staff extends BaseController
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;  
 				$arrMenubar['menu_item_1'] = "menu-item-active";
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid));
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass();
@@ -204,7 +204,7 @@ class Staff extends BaseController
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;  
 				$arrMenubar['menu_item_1'] = "menu-item-active";
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid));
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass();
@@ -267,7 +267,7 @@ class Staff extends BaseController
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;  
 				$arrMenubar['menu_item_1'] = "menu-item-active";
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid));
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass();
@@ -318,7 +318,7 @@ class Staff extends BaseController
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;  
 				$arrMenubar['menu_item_1'] = "menu-item-active";
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid));
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass();
@@ -380,7 +380,7 @@ class Staff extends BaseController
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;  
 				$arrMenubar['menu_item_1'] = "menu-item-active";
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid));
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass();
@@ -430,7 +430,7 @@ class Staff extends BaseController
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;  
 				$arrMenubar['menu_item_2'] = "menu-item-active";
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid));
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass();
@@ -473,7 +473,7 @@ class Staff extends BaseController
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;  
 				$arrMenubar['menu_item_1'] = "menu-item-active";
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid));
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass();
@@ -531,7 +531,7 @@ class Staff extends BaseController
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;  
 				$arrMenubar['menu_item_1'] = "menu-item-active";
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid));
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass();
@@ -582,7 +582,7 @@ class Staff extends BaseController
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;  
 				$arrMenubar['menu_item_1'] = "menu-item-active";
-				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $objAdmin);
+				$arrMenubar['arrCat'] = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid));
 				$arrMenubar['admin'] = $objAdmin;
 				//sidebar
 				$arrSidebar = getSidebarClass();
@@ -614,7 +614,7 @@ class Staff extends BaseController
 		$objStaff = $staff_model->login($uid, $pwd);
 
 		if(!is_null($objStaff)){
-			if($objStaff->stf_state_active == PERMIT_OK){	//승인
+			if($staff_model->isPermitStaff($objStaff)){	//승인
 				///Last Time
 				$staff_model->updateLastTime($objStaff->stf_uid);
 				$sessData = array('uid'=>$objStaff->stf_uid, 'logged_in'=>TRUE);
@@ -678,7 +678,7 @@ class Staff extends BaseController
 				
 				$result->status = "success";
 				$result->data = $arrStaff;
-				$result->cats = getPermitedCategories($cat_model->getAll(), $objAdmin);	
+				$result->cats = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid));	
 			} 
 
 		}
@@ -1137,6 +1137,7 @@ class Staff extends BaseController
 			$staff_model = new Staff_Model();
 			$cat_model = new Category_Model();
 			$forge_model = new Forge_Model();
+			$notice_model = new Notice_Model();
 
 			$strUid = $this->session->uid;
 			$objAdmin = $staff_model->getByUid($strUid);
@@ -1159,6 +1160,7 @@ class Staff extends BaseController
 						$iResult = RESULT_ERROR;
 					}
 					$staff_model->resetApp($arrRqData['cat_id']);
+					$notice_model->updateNotice($arrRqData['cat_id'], ''); 	//Clear notice by category id.
 				}
 
 				if($iResult == RESULT_OK)
