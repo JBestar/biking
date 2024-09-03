@@ -25,7 +25,7 @@ class Staff extends BaseController
 
 	public function index()
 	{		
-		if(!is_login())
+		if(!is_login(true))
 		{
 			$this->response->redirect('/pages/login');			
 		}
@@ -72,7 +72,7 @@ class Staff extends BaseController
 
     public function company()
 	{		
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		}
@@ -119,7 +119,7 @@ class Staff extends BaseController
 
 	public function company_edit($stf_fid)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		}
@@ -177,7 +177,7 @@ class Staff extends BaseController
 
 	public function agency()
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		}
@@ -223,7 +223,7 @@ class Staff extends BaseController
 
 	public function agency_edit($stf_fid)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		}
@@ -291,7 +291,7 @@ class Staff extends BaseController
 
 	public function employee()
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		}
@@ -337,7 +337,7 @@ class Staff extends BaseController
 
 	public function employee_edit($stf_fid)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		}
@@ -403,7 +403,7 @@ class Staff extends BaseController
 
 	public function password()
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		}
@@ -446,7 +446,7 @@ class Staff extends BaseController
 	
 	public function admin()
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		}
@@ -494,7 +494,7 @@ class Staff extends BaseController
 
 	public function admin_edit($cat_id)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		}
@@ -552,7 +552,7 @@ class Staff extends BaseController
 
 	public function design_connect($cat_id)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		} 

@@ -29,7 +29,7 @@ class Apps extends BaseController
 
 	public function index()
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{
 			$this->response->redirect('/pages/login');			
 		}
@@ -41,7 +41,7 @@ class Apps extends BaseController
 
 	public function notice($app)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{
 			$this->response->redirect('/pages/login');			
 		}
@@ -101,7 +101,7 @@ class Apps extends BaseController
 
 	public function member($app)
 	{
-        if(!is_login())
+        if(!is_login(true))
 		{
 			$this->response->redirect('/pages/login');			
 		}
@@ -152,9 +152,7 @@ class Apps extends BaseController
 
 				echo view('header', $arrMenubar );
 				echo view('appsvc/sidebar', $arrSidebar );
-				if($this->categoryName == "luckyfuture" || $this->categoryName == "reantek")
-					echo view('appsvc/member-luckyfuture', $arrData);
-				else echo view('appsvc/member', $arrData);	
+				echo view('appsvc/member', $arrData);	
 				echo view('footer', array("site_name"=>$siteName) );
 				
 			} else {
@@ -165,7 +163,7 @@ class Apps extends BaseController
 
 	public function member_edit($app, $mb_fid)
 	{
-        if(!is_login())
+        if(!is_login(true))
 		{
 			$this->response->redirect('/pages/login');			
 		}
@@ -231,10 +229,7 @@ class Apps extends BaseController
 
 				echo view('header', $arrMenubar );
 				echo view('appsvc/sidebar', $arrSidebar );
-				if($this->categoryName == "luckyfuture" || $this->categoryName == "reantek")
-					echo view('appsvc/member_edit-luckyfuture', $arrData);
-				else 
-					echo view('appsvc/member_edit', $arrData);
+				echo view('appsvc/member_edit', $arrData);
 				echo view('footer', array("site_name"=>$siteName) );
 				
 			} else {
@@ -245,7 +240,7 @@ class Apps extends BaseController
 
 	public function member_mreg($app)
 	{
-        if(!is_login())
+        if(!is_login(true))
 		{
 			$this->response->redirect('/pages/login');			
 		}
@@ -308,7 +303,7 @@ class Apps extends BaseController
 	
 	public function member_oreg($app)
 	{
-        if(!is_login())
+        if(!is_login(true))
 		{
 			$this->response->redirect('/pages/login');			
 		}
@@ -370,7 +365,7 @@ class Apps extends BaseController
 
 	public function connect($app)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{
 			$this->response->redirect('/pages/login');			
 		}
@@ -432,7 +427,7 @@ class Apps extends BaseController
 
 	public function note($app)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{
 			$this->response->redirect('/pages/login');			
 		}
@@ -499,7 +494,7 @@ class Apps extends BaseController
 
 	public function bethistory($app)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{
 			$this->response->redirect('/pages/login');			
 		}
@@ -558,7 +553,7 @@ class Apps extends BaseController
 
 	public function updatehistory($app)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		} 
@@ -614,7 +609,7 @@ class Apps extends BaseController
 
 	public function upload($app)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		}
@@ -809,7 +804,7 @@ class Apps extends BaseController
 
 	public function setting($app)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		}
@@ -866,7 +861,7 @@ class Apps extends BaseController
 	
 	public function downlast($app)
 	{
-		if(!is_login())
+		if(!is_login(true))
 		{	
 			$this->response->redirect('/pages/login');			
 		}
@@ -2437,8 +2432,6 @@ class Apps extends BaseController
 							$arrResult['result'] = APPRESULT_OK;
 							$arrResult['remained'] = strval($tmLimit-$tmNow);
 							$arrResult['vip'] = strval($objMember->mb_vip);
-							if($this->categoryName == "luckyfuture" || $this->categoryName == "reantek")		//럭키퓨처
-								$arrResult['order'] = $objMember->mb_prop_1;
 						} else $arrResult['result'] = APPRESULT_FAIL_SAVE;
 						
 					}
@@ -2598,8 +2591,6 @@ class Apps extends BaseController
 						else $arrResult['version'] = "";
 						$arrResult['vip'] = strval($objMember->mb_vip);
 						
-						if($this->categoryName == "luckyfuture" || $this->categoryName == "reantek")		//럭키퓨처
-							$arrResult['order'] = $objMember->mb_prop_1;
 					}
 
 				}
