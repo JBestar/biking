@@ -12,7 +12,7 @@
         <!-- JQuery 1.12.4--> 
 	    <script src="/assets/js/lib/jquery-1.12.4.min.js"></script>
 	
-        <script src="/assets/js/util.js?v=1"></script>
+        <script src="/assets/js/util.js?v=2"></script>
         <style>
             <?php if(array_key_exists('login.img', $_ENV)): ?>
                 .ibg {

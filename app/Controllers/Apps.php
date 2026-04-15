@@ -146,7 +146,7 @@ class Apps extends BaseController
 				$arrSidebar['cat_name'] = $objCat->cat_name;
 				//staff
 				$arrData['arrEmp'] = $staff_model->getSortEmpNames($objAdmin, $this->categoryId, true);
-				$arrData['cat_name'] = $objCat->cat_name;
+				$arrData['cat'] = $objCat;
 				$arrData['stf_level'] = $objAdmin->stf_level;
 				$arrData['search_uid'] = $search_uid;
 
@@ -930,7 +930,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -955,7 +955,7 @@ class Apps extends BaseController
 			else $bPermit = $staff_model->isEnableStaff($objAdmin, $objRqStaff);
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -965,7 +965,7 @@ class Apps extends BaseController
 				$arrEmpId = $staff_model->getEmpIds($objRqStaff, $this->categoryId);				
 				$count = $member_model->searchCount($arrEmpId, $search);
 				
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $count;	
 			} 
 
@@ -984,7 +984,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1009,7 +1009,7 @@ class Apps extends BaseController
 			else $bPermit = $staff_model->isEnableStaff($objAdmin, $objRqStaff);
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1032,8 +1032,9 @@ class Apps extends BaseController
 					}
 				} 
 
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $arrMember;	
+				$result->machine = intval($objCat->cat_prop_1);	
 			} 
 
 		}
@@ -1049,7 +1050,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1069,7 +1070,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1080,9 +1081,9 @@ class Apps extends BaseController
 				
 				$bResult = $member_model->updateByFid($arrEmpId, $arrRqData['mb_fid'], $arrRqData);
 				if($bResult)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = RESULT_FAIL;
 				}
 					
@@ -1100,7 +1101,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1120,7 +1121,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1131,9 +1132,9 @@ class Apps extends BaseController
 
 				$bResult = $member_model->deleteByFid($arrEmpId, $arrRqData['mb_fid']);
 				if($bResult)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = RESULT_FAIL;
 				}
 					
@@ -1152,7 +1153,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1185,15 +1186,15 @@ class Apps extends BaseController
 			}
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 
-				$iResult = $member_model->modifyByFid($objMember->mb_fid, $arrRqData);
+				$iResult = $member_model->modifyByFid($objMember->mb_fid, $arrRqData, $objAdmin->stf_level);
 				if($iResult == RESULT_OK)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = $iResult;
 				}
 			} 
@@ -1212,7 +1213,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1232,18 +1233,18 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
 				$this->categoryName = $objCat->cat_name;
 				$member_model = new Member_Model($this->categoryName);
 				
-				$iResult = $member_model->register($arrRqData);
+				$iResult = $member_model->register($arrRqData, $objAdmin->stf_level);
 				if($iResult == RESULT_OK)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = $iResult;
 				}
 			} 
@@ -1273,7 +1274,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1293,7 +1294,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1324,9 +1325,9 @@ class Apps extends BaseController
 				}	
 
 				if($iResult == RESULT_OK)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = $iResult;
 				}
 			} 
@@ -1345,7 +1346,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1365,7 +1366,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1387,9 +1388,9 @@ class Apps extends BaseController
 				}
 				
 				if($iResult == RESULT_OK)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = $iResult;
 				}
 				
@@ -1408,7 +1409,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1428,7 +1429,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1458,7 +1459,7 @@ class Apps extends BaseController
 					}
 				}  
 
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $arrData;
 			} 
 
@@ -1475,7 +1476,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1500,7 +1501,7 @@ class Apps extends BaseController
 			else $bPermit = $staff_model->isEnableStaff($objAdmin, $objRqStaff);
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1511,7 +1512,7 @@ class Apps extends BaseController
 				$arrEmpId = $staff_model->getEmpIds($objRqStaff, $this->categoryId);				
 				$count = $connect_model->searchCount($arrEmpId, $search);
 				
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $count;	
 			} 
 
@@ -1530,7 +1531,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {	
 			$this->sess_update();	
@@ -1557,7 +1558,7 @@ class Apps extends BaseController
 			else $bPermit = $staff_model->isEnableStaff($objAdmin, $objRqStaff);
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$designConn = new DesignConn();
@@ -1587,18 +1588,60 @@ class Apps extends BaseController
 	
 				}
 				
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $arrConnect;	
 				$result->act = $iAct;	
 				$result->field = $designConn->sortedFdKey($this->categoryId);	
 				$result->count = $connect_model->searchCount($arrEmpId, $search);
+				$result->level = $objAdmin->stf_level;
 			} 
 
 		}
 		echo json_encode($result);	
 	}
 
+	public function connector_delete($app)
+	{
+		$sessId = $this->request->getVar('sess');
 
+		$result = new \StdClass;
+		if(!is_login())
+		{
+			$result->status = STATUS_LOGOUT;
+		}
+		else {		
+			$staff_model = new Staff_Model();
+			$cat_model = new Category_Model();
+
+			$objCat = $cat_model->getByName($app);
+
+			$strUid = $this->session->uid;
+			$objAdmin = $staff_model->getByUid($strUid);
+
+			$bPermit = true;
+			if(is_null($objAdmin) || is_null($objCat))
+				$bPermit = false;
+			else if($objAdmin->stf_level < LEVEL_ADMIN)
+				$bPermit = false;
+
+			if(!$bPermit){
+				$result->status = STATUS_FAIL;
+				$result->code = RESULT_STOP;
+			} else{
+				$this->categoryId = $objCat->cat_id;
+				$this->categoryName = $objCat->cat_name;
+
+				$connect_model = new Connect_Model($this->categoryName);
+
+				writeLog($logHead.$this->categoryName.">>admin=".$strUid.">>session=".$sess_id."(Force logout)");
+
+				$connect_model->deleteById($sessId);
+				$result->status = STATUS_SUCCESS;
+			} 
+
+		}
+		echo json_encode($result);	
+	}
 
 	public function bet_count($app)
 	{
@@ -1611,7 +1654,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1636,7 +1679,7 @@ class Apps extends BaseController
 			else $bPermit = $staff_model->isEnableStaff($objAdmin, $objRqStaff);
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1646,7 +1689,7 @@ class Apps extends BaseController
 				$arrEmpId = $staff_model->getEmpIds($objRqStaff, $this->categoryId);				
 				$count = $bet_model->searchCount($arrEmpId, $arrRqData, $this->categoryName);
 				
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $count;	
 			} 
 
@@ -1667,7 +1710,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1692,7 +1735,7 @@ class Apps extends BaseController
 			else $bPermit = $staff_model->isEnableStaff($objAdmin, $objRqStaff);
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1713,7 +1756,7 @@ class Apps extends BaseController
 					}
 				}
 
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $arrBet;	
 			} 
 
@@ -1731,7 +1774,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1751,7 +1794,7 @@ class Apps extends BaseController
 				$bPermit = false;
 			
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1760,7 +1803,7 @@ class Apps extends BaseController
 
 				$bResult = $bet_model->deleteByUid($arrRqData['mb_uid'], $arrRqData);
 				
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 			} 
 
 		}
@@ -1774,7 +1817,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1794,7 +1837,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1803,7 +1846,7 @@ class Apps extends BaseController
 
 				$count = $update_model->searchCount();
 				
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $count;	
 			} 
 
@@ -1821,7 +1864,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1841,7 +1884,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1850,7 +1893,7 @@ class Apps extends BaseController
 
 				$arrUpdate = $update_model->searchList($page, $cntPer);
 
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $arrUpdate;	
 			} 
 
@@ -1868,7 +1911,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1888,7 +1931,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -1907,9 +1950,9 @@ class Apps extends BaseController
 				$bResult = $update_model->deleteById($arrRqData['update_id']);
 
 				if($bResult)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = RESULT_FAIL;	
 				}	
 			} 
@@ -1927,7 +1970,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1947,7 +1990,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->settingPath = DOWNLOADROOT.$objCat->cat_name.DIRECTORY_SEPARATOR."setting";
@@ -1956,7 +1999,7 @@ class Apps extends BaseController
 				
 				getSubDir($this->settingPath, $search, $arrDir);
 				
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = count($arrDir);	
 			} 
 
@@ -1974,7 +2017,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1994,7 +2037,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->settingPath = DOWNLOADROOT.$objCat->cat_name.DIRECTORY_SEPARATOR."setting";
@@ -2018,7 +2061,7 @@ class Apps extends BaseController
 					}
 				}
 
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $arrData;	
 			} 
 
@@ -2034,7 +2077,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -2054,7 +2097,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$arrFile = [];
@@ -2068,7 +2111,7 @@ class Apps extends BaseController
 				
 				$count = count($arrFile);
 				
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = count($arrFile);	
 			} 
 
@@ -2086,7 +2129,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -2106,7 +2149,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				
@@ -2142,7 +2185,7 @@ class Apps extends BaseController
 					}
 				}
 
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $arrData;	
 			} 
 
@@ -2159,7 +2202,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -2179,7 +2222,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				
@@ -2190,9 +2233,9 @@ class Apps extends BaseController
 					$bResult = unlink($filePath);
 				}	
 				if($bResult)			
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = RESULT_FAIL;
 				}	
 			} 
@@ -2272,7 +2315,7 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {	
 			$this->sess_update();
@@ -2296,7 +2339,7 @@ class Apps extends BaseController
 				$bPermit = false;
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$this->categoryId = $objCat->cat_id;
@@ -2319,7 +2362,7 @@ class Apps extends BaseController
 					}
 				}
 
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $arrData;	
 
 				$user = new \StdClass;
@@ -2341,13 +2384,13 @@ class Apps extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 
 			$this->sess_update();
 			
-			$result->status = "success";
+			$result->status = STATUS_SUCCESS;
 			
 		}
 		echo json_encode($result);	
@@ -2374,6 +2417,7 @@ class Apps extends BaseController
 		$pwd = $this->request->getVar('password');
 		$force = intval($this->request->getVar('force'));
 		$ip_address = $this->request->getIPAddress();
+		$machine = $this->request->getVar('machine');
 		
 		$arrResult = [];
 		
@@ -2404,24 +2448,31 @@ class Apps extends BaseController
 					$sess_id = $this->session->session_id;
 					$connRepeat = $conn_model->getRepeatUid($objMember->mb_uid);
 
+					$enableMachVerify = $objCat->cat_prop_1 == STATE_ACTIVE;
+
+					$objParent = null;
 					$tmNow = time();
 					$tmLimit = strtotime($objMember->mb_time_limit);
 					if($tmLimit < $tmNow) {
 						$arrResult['result'] = APPRESULT_EXPIRED;
 					} else if($objMember->mb_state_active != PERMIT_OK || 
-							!$staff_model->isPermitMember($objMember, $this->categoryId) ||
+							!$staff_model->isPermitMember($objMember, $this->categoryId, $objParent) ||
 							$objCat->cat_stop == 1) {
 						$arrResult['result'] = APPRESULT_BLOCK;
 					} else if($force != 1 && !is_null($connRepeat)){
 						$arrResult['result'] = APPRESULT_DUPLICATE;
 					} else if($force == 1 && !is_null($connRepeat) && $connRepeat->sess_pub_addr !== $ip_address){
 						$arrResult['result'] = APPRESULT_DUPLICATE;
-					} else if($this->categoryName == "luckysheet" && $objMember->mb_prop_1 == 1 ){
+					} else if($enableMachVerify && strlen($machine) == 0 ){
+						$arrResult['result'] = APPRESULT_BLOCK;
+					} else if($enableMachVerify && strlen($objMember->mb_memo_1) > 0 && $objMember->mb_memo_1 !== $machine  ){
 						$arrResult['result'] = APPRESULT_BLOCK;
 					} else {
 						if($force == 1 && !is_null($connRepeat))
 							$conn_model->deleteByUid($objMember->mb_uid);
-
+						if($enableMachVerify && strlen($objMember->mb_memo_1) == 0){
+							$member_model->updateByFid(null, $objMember->mb_fid, ['mb_memo_1'=>$machine]);
+						}
 						if($conn_model->register($sess_id, $objMember, $ip_address)) {
 							writeLog($logHead.$this->categoryName.">>userId=".$objMember->mb_uid.">>sessionId=".$sess_id.">>ip=".$ip_address);
 							//Last Time
@@ -2430,6 +2481,7 @@ class Apps extends BaseController
 							$sessData = array('uid'=>$objMember->mb_uid, $this->categoryName=>TRUE);
 							$this->session->set($sessData);
 
+							$arrResult['memo'] = $objParent->stf_memo;
 							$arrResult['result'] = APPRESULT_OK;
 							$arrResult['remained'] = strval($tmLimit-$tmNow);
 							$arrResult['vip'] = strval($objMember->mb_vip);
@@ -2507,17 +2559,15 @@ class Apps extends BaseController
 				$conn_model = new Connect_Model($this->categoryName);
 				$member_model = new Member_Model($this->categoryName);
 				
-				//$websession = $this->request->getVar('websession');
 				$uid = $this->session->uid;
 				$sess_id = $this->session->session_id;
 				$conn = $conn_model->getById($sess_id);
 				$ip_addres = $this->request->getIPAddress();
-				// writeLog($logHead.$this->categoryName.">>userId=".$uid.">>sessionId=".$sess_id.">>ip=".$ip_addres);
 
 				if(is_null($conn)){
 					$this->app_logout($app);
 					$arrResult['result'] = APPRESULT_LOGOUT;
-					writeLog($logHead.$this->categoryName.">>userId=".$uid.">>session=null");
+					writeLog($logHead.$this->categoryName.">>userId=".$uid.">>session=".$sess_id."(NotFound)");
 					
 				} else if($conn->sess_mb_uid != $uid){
 					$this->app_logout($app);
@@ -2532,12 +2582,10 @@ class Apps extends BaseController
 						$arrResult['result'] = APPRESULT_BLOCK;
 					} else if(strtotime($objMember->mb_time_limit) < $tmNow){
 						$arrResult['result'] = APPRESULT_EXPIRED;
-						writeLog($logHead.$this->categoryName.">>userId=".$uid.">>session=expired");
+						writeLog($logHead.$this->categoryName.">>userId=".$uid.">>session=".$sess_id."(Expired)");
 					} else if($objMember->mb_state_active != PERMIT_OK || 
 							!$staff_model->isPermitMember($objMember, $this->categoryId) ||
 							$objCat->cat_stop == 1){
-						$arrResult['result'] = APPRESULT_BLOCK;
-					}  else if($this->categoryName == "luckysheet" && $objMember->mb_prop_1 == 1 ){
 						$arrResult['result'] = APPRESULT_BLOCK;
 					} else {
 						$conn = new \StdClass;
@@ -2595,6 +2643,58 @@ class Apps extends BaseController
 					}
 
 				}
+			}
+		}
+		echo json_encode($arrResult);
+	}
+
+	public function GetParam($app)
+	{
+		// result=1: 정상
+		// result=4: 계정차단
+		// result=10: 세션아웃
+		$logHead = "<GetParam>";
+		$arrResult = [];
+		
+		$cat_model = new Category_Model();
+		
+		$objCat = $cat_model->getByName($app);
+		if(is_null($objCat)) {
+			$arrResult['result'] = APPRESULT_NO_APP;
+		} else {
+			$this->categoryId = $objCat->cat_id;
+			$this->categoryName = $objCat->cat_name;
+			// $this->ClearConnect();
+
+			if(!is_appLogin($this->categoryName))
+			{
+				$arrResult['result'] = APPRESULT_LOGOUT;
+			}
+			else{		
+
+				$staff_model = new Staff_Model();	
+				$member_model = new Member_Model($this->categoryName);
+
+				$uid = $this->session->uid;
+				$sess_id = $this->session->session_id;
+
+				$objMember = $member_model->getByUid($uid) ;
+				$objParent = null;
+				
+				if(is_null($objMember) ){
+					$arrResult['result'] = APPRESULT_BLOCK;
+				} else if($objMember->mb_state_active != PERMIT_OK || 
+						!$staff_model->isPermitMember($objMember, $this->categoryId, $objParent) ||
+						$objCat->cat_stop == 1){
+					$arrResult['result'] = APPRESULT_BLOCK;
+				} else {
+
+					$arrResult['result'] = APPRESULT_OK;
+					$arrResult['comp_param'] = $objParent->stf_memo;
+					$arrResult['acc_param'] = $objMember->mb_memo_2;
+					// writeLog($logHead.$this->categoryName.">>userId=".$uid.">>session=".$sess_id.">>data=".json_encode($arrResult));
+				}
+
 			}
 		}
 		echo json_encode($arrResult);
@@ -2835,15 +2935,24 @@ class Apps extends BaseController
 				}
 
 				$objVer->files = $arrFile;
-
 				$result = json_encode($objVer);
-				
 				$result = str_replace("\\\\", "/", $result);
-
 				$update_model->updateContent($objVer->version, $result);
 
+				$objVer->result = APPRESULT_OK;
+				$result = json_encode($objVer);
+				$result = str_replace("\\\\", "/", $result);
+
+			} else {
+				$arrResult = json_decode($result, true);
+				$arrResult['result'] = APPRESULT_OK;
+
+				$result = json_encode($arrResult);
+				$result = str_replace("\/", "/", $result);
 			}
-			
+		} else {
+			$objVer->result = APPRESULT_NONE_ID;
+			$result = json_encode($objVer);
 		}
 
 		echo $result;

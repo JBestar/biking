@@ -57,6 +57,20 @@
                 </td>
                 <td></td>
             </tr>
+            <?php if($stf_level >= LEVEL_MASTER) : ?>  
+                <tr>
+                    <td></td>
+                    <td><label>파라미터:</label></td>
+                    <td>
+                        <?php if(is_null($staff)) :  ?>	
+                            <textarea id="stf_memo" style="width:390px;" rows="5"></textarea>
+                        <?php else :?>
+                            <textarea id="stf_memo" style="width:390px;" rows="5"><?=$staff->stf_memo?></textarea>
+                        <?php endif ?>   
+                    </td>
+                    <td></td>
+                </tr>
+            <?php endif ?>
             <tr>
                 <td></td>
                 <td colspan="2">
@@ -76,9 +90,9 @@
     </div>
 </div>
 
-<script src="<?php echo base_url('/assets/js/staff/staff_edit.js');?>"></script>
+<script src="<?php echo base_url('/assets/js/staff/staff_edit.js?v=1');?>"></script>
 
 
 <script>
-    stf_level = 9;
+    stf_level = <?=LEVEL_COMPANY?>;
 </script>

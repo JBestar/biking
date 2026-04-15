@@ -19,6 +19,10 @@
                     <?php foreach ($arrField as $field):?>
                         <th><?=$field?></th>
                     <?php endforeach;?>
+                    
+                    <?php if($admin->stf_level >= LEVEL_ADMIN) :?>
+                        <th></th>
+                    <?php endif;?>
                 </tr>
             </thead>
             <tbody id="tb-data-id">
@@ -56,5 +60,5 @@
     }
 </style>
 
-<script src="<?php echo base_url('/assets/js/appsvc/connect-common.js?v=2');?>"></script>
-<script src="<?php echo base_url('/assets/js/appsvc/connect.js?v=2');?>"></script>
+<script src="<?php echo base_url('/assets/js/appsvc/connect-common.js?v=3');?>"></script>
+<script src="<?php echo base_url('/assets/js/appsvc/connect.js?v=3');?>"></script>

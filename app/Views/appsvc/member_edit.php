@@ -113,6 +113,20 @@
                 </td>
                 <td></td>
             </tr>
+            <?php if($stf_level > LEVEL_ADMIN) : ?>  
+            <tr>
+                <td></td>
+                <td><label>파라미터:</label></td>
+                <td>
+                    <?php if(is_null($member)) :  ?>	
+                        <textarea id="mb_memo_2" style="width:390px;" rows="5"></textarea>
+                    <?php else :?>
+                        <textarea id="mb_memo_2" style="width:390px;" rows="5"><?=$member->mb_memo_2?></textarea>
+                    <?php endif ?>   
+                </td>
+                <td></td>
+            </tr>
+            <?php endif ?>
             <tr>
                 <td></td>
                 <td colspan="2">
@@ -133,4 +147,4 @@
 </div>
 
 <script src="<?php echo base_url('/assets/js/appsvc/member_edit-common.js');?>"></script>
-<script src="<?php echo base_url('/assets/js/appsvc/member_edit.js');?>"></script>
+<script src="<?php echo base_url('/assets/js/appsvc/member_edit.js?v=1');?>"></script>

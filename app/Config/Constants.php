@@ -65,6 +65,9 @@ defined('DECADE') || define('DECADE', 315360000);
 |       http://tldp.org/LDP/abs/html/exitcodes.html
 |
 */
+defined('ENV_PRODUCTION')   || define('ENV_PRODUCTION', 'production');
+defined('ENV_DEVELOPMENT')  || define('ENV_DEVELOPMENT', 'development');
+
 defined('EXIT_SUCCESS')        || define('EXIT_SUCCESS', 0); // no errors
 defined('EXIT_ERROR')          || define('EXIT_ERROR', 1); // generic error
 defined('EXIT_CONFIG')         || define('EXIT_CONFIG', 3); // configuration error
@@ -90,6 +93,7 @@ defined('DOWNLOADROOT')        || define('DOWNLOADROOT', ROOTPATH."public".DIREC
 
 defined('CONNECT_TIMEOUT')       || define('CONNECT_TIMEOUT', "10");
 
+defined('LEVEL_MASTER')        || define('LEVEL_MASTER', 11);
 defined('LEVEL_ADMIN')         || define('LEVEL_ADMIN', 10);
 defined('LEVEL_COMPANY')       || define('LEVEL_COMPANY', 9);
 defined('LEVEL_AGENCY')        || define('LEVEL_AGENCY', 8);
@@ -109,6 +113,10 @@ defined('RESULT_STOP')         || define('RESULT_STOP', 3);
 defined('RESULT_ERROR')        || define('RESULT_ERROR', 4);
 defined('RESULT_EXIST_ID')     || define('RESULT_EXIST_ID', 5);
 defined('RESULT_EXIST_NAME')   || define('RESULT_EXIST_NAME', 6);
+//Json Result Status
+defined('STATUS_SUCCESS')      || define('STATUS_SUCCESS', 'success');
+defined('STATUS_FAIL')         || define('STATUS_FAIL', 'fail');
+defined('STATUS_LOGOUT')       || define('STATUS_LOGOUT', 'logout');
 
 //
 defined('APPRESULT_NONE_ID')      || define('APPRESULT_NONE_ID', "0");

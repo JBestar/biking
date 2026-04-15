@@ -11,16 +11,20 @@
             <tr><td></td>
                 <td><label>분류:</label></td>
                 <td>
-                    <?php if($stf_fid > 0) {  ?>
+                    <?php if($stf_fid > 0) :  ?>
                         <select id="stf_emp" style="width:215px;" disabled>
-                    <?php } else { ?>
-                        <select id="stf_emp" style="width:215px;">
-                    <?php } ?>
+                    <?php else : ?>
+                         <?php if($stf_level >= LEVEL_MASTER) : ?>  
+                            <select id="stf_emp" style="width:215px;" onchange="empChanged()">
+                        <?php else : ?>
+                            <select id="stf_emp" style="width:215px;">
+                        <?php endif ?>
+                    <?php endif ?>
                             <?php foreach ($arrEmp as $objEmp):
                                 if(is_null($staff) || ($staff->stf_emp_fid != $objEmp->stf_fid)) {  ?>
-                            <option value="<?=$objEmp->stf_fid?>"><?=$objEmp->stf_name?></option>
+                            <option value="<?=$objEmp->stf_fid?>" data-memo="<?=$objEmp->stf_memo?>"><?=$objEmp->stf_name?></option>
                             <?php } else {?>
-                            <option value="<?=$objEmp->stf_fid?>" selected><?=$objEmp->stf_name?></option>
+                            <option value="<?=$objEmp->stf_fid?>" data-memo="<?=$objEmp->stf_memo?>" selected><?=$objEmp->stf_name?></option>
                             <?php }  
                                 endforeach;?>
                         </select>    
@@ -75,6 +79,20 @@
                 </td>
                 <td></td>
             </tr>
+            <?php if($stf_level >= LEVEL_MASTER) : ?>  
+                <tr>
+                    <td></td>
+                    <td><label>파라미터:</label></td>
+                    <td>
+                        <?php if(is_null($staff)) :  ?>	
+                            <textarea id="stf_memo" style="width:390px;" rows="5"></textarea>
+                        <?php else :?>
+                            <textarea id="stf_memo" style="width:390px;" rows="5"><?=$staff->stf_memo?></textarea>
+                        <?php endif ?>   
+                    </td>
+                    <td></td>
+                </tr>
+            <?php endif ?>
             <tr>
                 <td></td>
                 <td colspan="2">
@@ -95,8 +113,15 @@
 </div>
 
 
-<script src="<?php echo base_url('/assets/js/staff/staff_edit.js');?>"></script>
+<script src="<?php echo base_url('/assets/js/staff/staff_edit.js?v=1');?>"></script>
 
 <script>
-    stf_level = 7;
+    stf_level = <?=LEVEL_EMPLOYEE?>;
+
+    <?php if($stf_level >= LEVEL_MASTER && $stf_fid == 0) : ?>  
+
+        $(document).ready(function() {
+            empChanged();
+        });
+    <?php endif ?>
 </script>

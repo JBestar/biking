@@ -16,7 +16,7 @@
         <script src="/assets/js/lib/fontawesome.js"></script>
         <script src="/assets/js/lib/worker.js"></script>
         
-        <script src="/assets/js/util.js?v=1"></script>
+        <script src="/assets/js/util.js?v=2"></script>
         <script src="/assets/js/header.js"></script>        
         <script src="/assets/js/window.js"></script>
 

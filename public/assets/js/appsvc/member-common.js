@@ -72,7 +72,7 @@ $(document).ready(function(){
             // console.log(jResult);
             if(jResult.status == "success")
             {
-                showMember(jResult.data);
+                showMember(jResult.data, jResult.machine);
             } else if(jResult.status == "fail")
             {    
                 //alert('잘못된 계정정보입니다.');       

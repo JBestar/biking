@@ -3,6 +3,7 @@ function saveApp() {
     objCat.cat_id = $("#cat_id").val();
     objCat.cat_name = $("#cat_name").val();
     objCat.cat_title = $("#cat_title").val();
+    objCat.cat_prop_1 = $("#cat_prop_1").prop('checked') ? 1 : 0;
 
     if (objCat.cat_name.length < 1 || objCat.cat_title.length < 1) {
         alert('잘못된 앱정보입니다.');
@@ -43,6 +44,7 @@ function createApp() {
     var objCat = new Object();
     objCat.cat_name = $("#cat_name").val();
     objCat.cat_title = $("#cat_title").val();
+    objCat.cat_prop_1 = $("#cat_prop_1").prop('checked') ? 1 : 0;
 
     if (objCat.cat_name.length < 1 || objCat.cat_title.length < 1) {
         alert('잘못된 앱정보입니다.');

@@ -262,7 +262,6 @@ class Staff extends BaseController
 			if($bPermit){
 				
 				$arrEmp = $staff_model->getSortStaffNames($objAdmin, LEVEL_COMPANY);
-
 				//top-menu
 				$arrMenubar = getMenuClass();
 				$arrMenubar['site_name'] = $siteName;  
@@ -623,14 +622,14 @@ class Staff extends BaseController
 				$this->sess_login();
 				
 				$arrResult['code'] = RESULT_OK;
-				$arrResult['status'] = "success";
+				$arrResult['status'] = STATUS_SUCCESS;
 			} else {									//차단
 				$arrResult['code'] = RESULT_STOP;
-				$arrResult['status'] = "fail";
+				$arrResult['status'] = STATUS_FAIL;
 			}
 		} else {
 			$arrResult['code'] = RESULT_ERROR;			//아이디,비번오류
-			$arrResult['status'] = "fail";
+			$arrResult['status'] = STATUS_FAIL;
 		}
 		echo json_encode($arrResult);
 	}
@@ -639,7 +638,7 @@ class Staff extends BaseController
 	{
 		$this->sess_logout();
 
-		$arrResult['status'] = "success";
+		$arrResult['status'] = STATUS_SUCCESS;
 		echo json_encode($arrResult);
 	}
 
@@ -651,7 +650,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$this->sess_update();
@@ -671,12 +670,12 @@ class Staff extends BaseController
 				$bPermit = false;
 			
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$arrStaff = $staff_model->getNamedStaff($objAdmin, $level, 0, $search);
 				
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $arrStaff;
 				$result->cats = getPermitedCategories($cat_model->getAll(), $staff_model->getTopStaffByFid($objAdmin->stf_fid));	
 			} 
@@ -694,7 +693,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$this->sess_update();
@@ -716,7 +715,7 @@ class Staff extends BaseController
 			}
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				/*
@@ -729,9 +728,9 @@ class Staff extends BaseController
 				*/
 				$bResult = $staff_model->updateByFid($objRqStaff->stf_fid, $arrRqData);
 				if($bResult)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = RESULT_FAIL;
 				}
 			} 
@@ -750,7 +749,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$this->sess_update();
@@ -773,7 +772,7 @@ class Staff extends BaseController
 			}
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$arrCat = $cat_model->getAll();
@@ -801,9 +800,9 @@ class Staff extends BaseController
 				} 
 
 				if($bResult)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = RESULT_FAIL;
 				}
 			} 
@@ -822,7 +821,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$this->sess_update();
@@ -844,15 +843,19 @@ class Staff extends BaseController
 			}
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 
-				$iResult = $staff_model->modifyByFid($objRqStaff->stf_fid, $arrRqData);
-				if($iResult == RESULT_OK)
-					$result->status = "success";
+				$iResult = $staff_model->modifyByFid($objRqStaff->stf_fid, $arrRqData, $objAdmin->stf_level);
+				if($iResult == RESULT_OK){
+					if($objAdmin->stf_level > LEVEL_ADMIN && $objRqStaff->stf_level > LEVEL_EMPLOYEE){
+						$staff_model->updateLowers($objRqStaff->stf_fid, $arrRqData);
+					}
+					$result->status = STATUS_SUCCESS;
+				}
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = $iResult;
 				}
 			} 
@@ -871,7 +874,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {	
 			$this->sess_update();
@@ -891,15 +894,15 @@ class Staff extends BaseController
 			
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else {
 
-				$iResult = $staff_model->register($arrRqData);
+				$iResult = $staff_model->register($arrRqData, $objAdmin->stf_level);
 				if($iResult == RESULT_OK)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = $iResult;
 				}
 			} 
@@ -918,7 +921,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$this->sess_update();
@@ -933,14 +936,14 @@ class Staff extends BaseController
 			}
 
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_ERROR;
 			} else{
 				$bResult = $staff_model->updatePwd($objAdmin->stf_fid, $pwd_new);
 				if($bResult)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = RESULT_FAIL;
 				}	
 			} 
@@ -957,7 +960,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -973,15 +976,15 @@ class Staff extends BaseController
 				$bPermit = false;
 			
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 
 				$bResult = $notice_model->updateNotice($arrRqData['notice_cat'], $arrRqData['notice_content']);
 				if($bResult)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = RESULT_FAIL;
 				}
 			} 
@@ -996,7 +999,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1012,12 +1015,12 @@ class Staff extends BaseController
 				$bPermit = false;
 			
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$arrApp = $cat_model->getAll();
 				
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 				$result->data = $arrApp;
 			} 
 
@@ -1032,7 +1035,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1050,7 +1053,7 @@ class Staff extends BaseController
 				$bPermit = false;
 			
 			if(!$bPermit) {
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$bResult = false;
@@ -1066,9 +1069,9 @@ class Staff extends BaseController
 				}
 
 				if($bResult)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = RESULT_ERROR;
 				}
 			} 
@@ -1084,7 +1087,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1103,7 +1106,7 @@ class Staff extends BaseController
 				$bPermit = false;
 			
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$bResult = false;
@@ -1112,9 +1115,9 @@ class Staff extends BaseController
 				}
 				
 				if($bResult)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = RESULT_ERROR;
 				}
 			} 
@@ -1131,7 +1134,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1149,7 +1152,7 @@ class Staff extends BaseController
 				$bPermit = false;
 			
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$iResult = $cat_model->register($arrRqData);
@@ -1164,9 +1167,9 @@ class Staff extends BaseController
 				}
 
 				if($iResult == RESULT_OK)
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = $iResult;
 				}
 			} 
@@ -1183,7 +1186,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1202,19 +1205,19 @@ class Staff extends BaseController
 				$bPermit = false;
 			
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$iResult = $cat_model->modifyById($objCat->cat_id, $arrRqData);
 				
 				
 				if($iResult == RESULT_OK){
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 					$forge_model->renameApp($objCat->cat_name, $arrRqData['cat_name']);
 				}
 					
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = $iResult;
 				}
 			} 
@@ -1231,7 +1234,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1249,18 +1252,18 @@ class Staff extends BaseController
 				$bPermit = false;
 			
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$iResult = $cat_model->updateById($objCat->cat_id, $arrRqData);
 				
 				
 				if($iResult == RESULT_OK){
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				}
 					
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = $iResult;
 				}
 			} 
@@ -1277,7 +1280,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1298,7 +1301,7 @@ class Staff extends BaseController
 				$bPermit = false;
 			
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				
@@ -1320,7 +1323,7 @@ class Staff extends BaseController
 				$bResult = $staff_model->changeApp($objCat1->cat_id, $objCat2->cat_id);
 				*/
 				
-				$result->status = "success";	
+				$result->status = STATUS_SUCCESS;	
 				
 				
 			} 
@@ -1338,7 +1341,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1356,13 +1359,13 @@ class Staff extends BaseController
 				$bPermit = false;
 			
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$designConn = new DesignConn();
 
 				$result->data = $designConn->sortedFields($objCat->cat_id, true);
-				$result->status = "success";
+				$result->status = STATUS_SUCCESS;
 
 			} 
 
@@ -1380,7 +1383,7 @@ class Staff extends BaseController
 		$result = new \StdClass;
 		if(!is_login())
 		{
-			$result->status = "logout";
+			$result->status = STATUS_LOGOUT;
 		}
 		else {		
 			$staff_model = new Staff_Model();
@@ -1398,18 +1401,18 @@ class Staff extends BaseController
 				$bPermit = false;
 			
 			if(!$bPermit){
-				$result->status = "fail";
+				$result->status = STATUS_FAIL;
 				$result->code = RESULT_STOP;
 			} else{
 				$designConn_model = new DesignConn_Model();
 				
 				$bResult = $designConn_model->modifyByCatId($objCat->cat_id, $arrRqData);
 				if($bResult){
-					$result->status = "success";
+					$result->status = STATUS_SUCCESS;
 				}
 					
 				else {
-					$result->status = "fail";
+					$result->status = STATUS_FAIL;
 					$result->code = RESULT_ERROR;
 				}
 			} 

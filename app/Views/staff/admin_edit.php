@@ -36,6 +36,20 @@
             </tr>
             <tr>
                 <td></td>
+                <td><label>기기설정:</label></td>
+                <td>
+                    <?php if(is_null($objCat)) :  ?>	
+                        <input type="checkbox" id="cat_prop_1" style="zoom:140%; position:relative; top:3px;">
+                        <label style="font-size: 14px;">적용</label>     
+                    <?php else :?>
+                        <input type="checkbox" id="cat_prop_1" style="zoom:140%; position:relative; top:3px;" <?=$objCat->cat_prop_1==STATE_ACTIVE?'checked':''?>>
+                        <label style="font-size: 14px;">적용</label>     
+                    <?php endif ?>
+                </td>        
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
                 <td colspan="2">
                     <hr />
                 </td>
@@ -58,4 +72,8 @@
     </div>
 </div>
 
-<script src="<?php echo base_url('/assets/js/staff/admin_edit.js?t=').time();?>"></script>
+<?php if($_ENV['CI_ENVIRONMENT'] == ENV_PRODUCTION) :?>
+    <script src="/assets/js/staff/admin_edit.js?v=1"></script>
+<?php else : ?>
+    <script src="/assets/js/staff/admin_edit.js?v=<?=time();?>"></script>
+<?php endif ?>

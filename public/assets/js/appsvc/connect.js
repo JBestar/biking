@@ -1,6 +1,6 @@
 
 
- function showConnector(arrSession, arrField, act=0){
+ function showConnector(arrSession, arrField, act=0, level=0){
     var tHtml = "";
     if(arrSession != null && arrSession.length > 0 && arrField != null){
        
@@ -19,7 +19,9 @@
             for(var idy in arrField){
                 tHtml += getTdHtml(arrField[idy], arrSession[idx], act);
             }
-            
+            if(level >= LEVEL_ADMIN){
+                tHtml += "<td><button onclick='logout(\""+arrSession[idx].sess_mb_uid+"\", \""+arrSession[idx].sess_id+"\")'>로그아웃</button>"+"</td>";
+            }
             tHtml += "</tr>";
         }
     }

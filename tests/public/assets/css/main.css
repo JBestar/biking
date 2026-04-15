@@ -1,0 +1,619 @@
+@charset "utf-8";
+html {
+    font-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+}
+
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+table,
+th,
+td,
+form,
+fieldset,
+legend,
+input,
+textarea,
+button,
+select {
+    margin: 0;
+    padding: 0
+}
+
+ul,
+ol,
+dl,
+li,
+dd,
+dt {
+    list-style: none;
+}
+
+body {
+    min-width: 850px;
+    height: 100%;
+    line-height: 1;
+    font-size: 13px;
+    background-color: #ffffff;
+    font-family: Sans-serif, 'NTS_L';
+}
+
+img,
+fieldset,
+iframe,
+button {
+    border: none;
+    outline: none;
+}
+
+i,
+em,
+address {
+    font-style: normal;
+}
+
+button {
+    cursor: pointer
+}
+
+input,
+select,
+button,
+textarea {
+    color: #222;
+    font-family: Sans-serif, 'NTS_L';
+}
+
+input:focus,
+textarea:focus {
+    outline: none
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    vertical-align: middle;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+
+/*
+===== Main Header Style =====
+*/
+
+.main-header {
+    width: 100%;
+    min-width: 450px;
+    position: fixed;
+    z-index: 100;
+    vertical-align: top;
+    top: 0px;
+    background-color: #212121;
+    border-bottom: 1px dotted rgba(255, 255, 255, 0.05);
+    padding: 10px 0px 5px;
+}
+
+.navbar-menu {
+    float: left;
+}
+
+
+/*
+.navbar-menu ul::before {
+    box-sizing: border-box;
+    display: inline-block;
+    content: "메뉴 ";
+    margin-right: 20px;
+    font-size: 14px;
+    color: rgb(110, 114, 113);
+    font-weight: 300;
+    height: 40px;
+    padding: 15px;
+    border-right: 1px dotted rgba(255, 255, 255, 0.05);
+}
+*/
+
+.main-header ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    padding-left: 20px;
+    overflow: hidden;
+}
+
+.menu-item-li {
+    color: white;
+    display: inline-block;
+}
+
+.navbar-menu li>a {
+    display: block;
+    text-align: center;
+    padding: 10px 12px;
+    font-size: 14px;
+    /*1.1vw;*/
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+}
+
+.navbar-menu li>a:hover {
+    color: #108dd5;
+    border-bottom: 1px solid #108dd5;
+    cursor: pointer;
+}
+
+.menu-item-active {
+    color: #108dd5;
+    display: inline-block;
+}
+
+
+/*
+    Header Right Menu
+*/
+
+.right-menu {
+    float: right;
+}
+
+.right-menu li>a {
+    display: block;
+    text-align: center;
+    padding: 20px 12px 5px 12px;
+    font-size: 13px;
+    /*1vw;*/
+}
+
+.right-menu li>a:hover {
+    color: #108dd5;
+    cursor: pointer;
+}
+
+
+/*
+===== Main Sidebar Style =====
+*/
+
+.main-sidebar {
+    clear: both;
+    height: 100%;
+    width: 150px;
+    position: fixed;
+    z-index: 1;
+    top: 50px;
+    left: 0;
+    background-color: #dee1e6;
+    overflow-x: hidden;
+    padding: 10px;
+}
+
+.main-sidebar::-webkit-scrollbar {
+    width: 10px;
+}
+
+
+/* Track */
+
+.main-sidebar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px grey;
+    border-radius: 5px;
+}
+
+
+/* Handle */
+
+.main-sidebar::-webkit-scrollbar-thumb {
+    background: #4f5377;
+    border-radius: 5px;
+}
+
+
+/* Handle on hover */
+
+.main-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #4f5377;
+}
+
+
+/* Style the sidebar links and the dropdown button */
+
+.main-sidebar a {
+    padding: 15px 0px 10px 10px;
+    text-decoration: none;
+    font-size: 14px;
+    color: black;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+}
+
+
+/* On mouse-over */
+
+.main-sidebar a:hover {
+    padding-left: 20px;
+    /*border: solid 1px #b7a708;*/
+    font-weight: normal;
+}
+
+.main-sidebar a i {
+    padding-right: 8px;
+}
+
+
+/* Add an active class to the active dropdown button */
+
+.main-sidebar .sidebar-a-active {
+    color: black;
+    background-color: #fff;
+    /*#88cbff;*/
+    font-weight: normal;
+}
+
+
+/*
+===== Main Container Style =====
+*/
+
+.main-container {
+    background-color: #fff;
+    margin-left: 160px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.main-content {
+    width: 100%;
+    padding-bottom: 20px;
+    color: black;
+}
+
+.control-content {
+    padding-left: 10px;
+    min-height: 30px;
+}
+
+.left-button {
+    background-color: #eee;
+    padding: 6px 25px;
+    border: solid 1px #333;
+    color: black;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 2px;
+}
+
+.left-button:hover {
+    background-color: #fff;
+    text-decoration: none;
+}
+
+.right-button {
+    float: right;
+    background-color: #eee;
+    padding: 8px 25px;
+    border: solid 1px #333;
+    color: black;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 2px;
+    margin-left: 5px;
+}
+
+.right-button:hover {
+    background-color: #fff;
+    text-decoration: none;
+}
+
+.main-content label {
+    font-size: 13px;
+}
+
+.control-content input {
+    font-size: 13px;
+    background-color: #eee;
+    border: solid 1px #333;
+    margin-right: 5px;
+    padding: 7px;
+    border-radius: 2px;
+}
+
+.control-content select {
+    font-size: 13px;
+    background-color: #eee;
+    border: solid 1px #333;
+    margin-right: 5px;
+    padding: 7px;
+    border-radius: 2px;
+}
+
+.main-content textarea {
+    width: 600px;
+    font-size: 14px;
+    text-align: left;
+    background-color: white;
+    color: black;
+    border: solid 1px #333;
+    padding: 5px 5px;
+    resize: vertical;
+}
+
+.main-content .layout-table {
+    margin-top: 50px;
+}
+
+.layout-table td {
+    padding: 5px 3px;
+}
+
+.form-button {
+    background-color: #eee;
+    padding: 5px 10px;
+    width: 100px;
+    margin-right: 10px;
+    border: solid 1px #333;
+    color: black;
+    font-size: 13px;
+    font-weight: normal;
+    border-radius: 2px;
+}
+
+.form-button:hover {
+    background-color: #fff;
+    text-decoration: none;
+}
+
+.layout-table select {
+    font-size: 13px;
+    background-color: #eee;
+    border: solid 1px #333;
+    margin-right: 10px;
+    padding: 7px;
+    border-radius: 2px;
+}
+
+.layout-table input[type="text"],
+.layout-table input[type="password"],
+.layout-table input[type="date"],
+.layout-table input[type="number"] {
+    font-size: 13px;
+    background-color: #eee;
+    border: solid 1px #333;
+    margin-right: 10px;
+    padding: 7px;
+    border-radius: 2px;
+    width: 200px;
+}
+
+.layout-table input[type="color"] {
+    font-size: 13px;
+    background-color: #eee;
+    border: solid 1px #333;
+    margin-right: 10px;
+    border-radius: 2px;
+    width: 215px;
+}
+
+.layout-table input[type="text"]:disabled {
+    color: #888;
+}
+
+.layout-table hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid #eeeeee;
+}
+
+.user-table {
+    clear: both;
+    width: 100%;
+    margin-top: 10px;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    border: solid 1px #333;
+}
+
+.user-table th {
+    background-color: #e7e7e7;
+    padding: 8px 2px;
+    text-align: center;
+    border-right: solid 1px #333;
+}
+
+.user-table td {
+    padding: 3px 2px;
+    text-align: center;
+    border-right: solid 1px #333;
+    line-height: 1.5em;
+}
+
+.user-table tr {
+    border-bottom: solid 1px #333;
+}
+
+.user-table .shape {
+    background-color: #eee;
+    padding: 0px 0px;
+    border: solid 0px #555;
+    color: black;
+    border-radius: 10px;
+    margin-right: 2px;
+    font-size: 20px;
+    box-shadow: 0px 0px;
+}
+
+.user-table .shape:hover {
+    color: rgb(119, 119, 119);
+}
+
+.user-table button {
+    background-color: #eee;
+    padding: 4px 6px;
+    border: solid 1px #555;
+    color: black;
+    border-radius: 2px;
+    margin-right: 2px;
+    margin-bottom: 1px;
+    font-weight: bold;
+    font-size: 12px;
+    font-family: inherit;
+    box-shadow: 0.5px 1px;
+}
+
+.user-table button:hover {
+    background-color: #fff;
+}
+
+.user-table a {
+    background-color: #eee;
+    padding: 5px 8px;
+    border: solid 1px #333;
+    color: black;
+    border-radius: 2px;
+    margin-right: 2px;
+    margin-bottom: 1px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.user-table a:hover {
+    background-color: #fff;
+}
+
+.user-table button.permit {
+    color: #001eff;
+}
+
+.user-table button.stop {
+    color: #f65656;
+}
+
+.user-table button.disable {
+    color: #4b4b4b;
+}
+
+.user-table td.red {
+    background-color: rgb(255, 0, 0);
+}
+
+.user-table td.orange {
+    background-color: rgb(255, 196, 0);
+}
+
+.user-table td.left {
+    text-align: left;
+}
+
+.user-table td.center {
+    text-align: center;
+}
+
+.user-table td.right {
+    text-align: right;
+}
+
+
+/*******Paginatin Style*************************/
+
+.list-page-div {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination-div {
+    float: left;
+}
+
+.pagination button {
+    float: left;
+    width: 30px;
+    height: 30px;
+    padding: 5px 8px;
+    transition: background-color .3s;
+    margin: 0 2px;
+    color: black;
+    text-align: center;
+    /*background-color: var(--main-bg-color);*/
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: normal;
+    border-width: 0px;
+    outline: 0px;
+}
+
+.pagination button.active {
+    background-color: #d6d6d6;
+    color: rgb(17, 0, 255);
+    font-weight: bolder;
+    /*border: 1px solid #d2be00;*/
+}
+
+.pagination button:hover {
+    background-color: #bbbbbb;
+}
+
+
+/*
+===== Main Footer Style =====
+*/
+
+.main-footer {
+    width: 100%;
+    position: fixed;
+    z-index: 100;
+    vertical-align: bottom;
+    bottom: 0px;
+}
+
+.main-footer p {
+    width: 100%;
+    text-align: center;
+    padding: 14px;
+    color: white;
+    background-color: #333;
+    font-size: 14px;
+}

@@ -80,7 +80,7 @@ function requestConnector() {
         success: function(jResult) {
             // console.log(jResult);
             if (jResult.status == "success") {
-                showConnector(jResult.data, jResult.field, jResult.act);
+                showConnector(jResult.data, jResult.field, jResult.act, jResult.level);
                 $('#connector_count').text(jResult.count);
             } else if (jResult.status == "fail") {
                 alert('잘못된 계정정보입니다.');
@@ -94,6 +94,37 @@ function requestConnector() {
         }
     });
 }
+
+function requestDeleteSess(send_data){
+    var url = getAppUrl("connector_delete");
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: url,
+        data: send_data,
+        success: function(jResult) {
+            // console.log(jResult);
+            if (jResult.status == "success") {
+                requestConnector();
+            } else if (jResult.status == "fail") {
+                alert('잘못된 계정정보입니다.');
+            } else if (jResult.status == "logout") {
+                location.replace('/');
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+    });
+}
+ 
+function logout(mb_uid, sessId){    
+    if(confirm(mb_uid +"회원을 로그아웃 시키겠습니까?")){
+        jsonData = { "sess":sessId};
+        requestDeleteSess(jsonData);
+    }
+ }
 
 function getTdHtml(field, objSess, act) {
     tHtml = "";

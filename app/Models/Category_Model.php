@@ -6,87 +6,49 @@ use Config\Database;
 
 class Category_Model extends Model {
 
-    
-    private $mDb;
-    private $mBuilder;
-    private $mTbName = "tbl0_category";
-    private $mTbColumn;
+    protected $table      = 'tbl0_category';
+    protected $primaryKey = 'cat_id';
+    protected $returnType = 'object'; 
 
-    function __construct()
-    {
-        //parent::__construct();        
-        $this->mDb      = Database::connect();
-        $this->mBuilder = $this->mDb->table($this->mTbName);
-        $this->mTbColumn = ['cat_id', 'cat_name', 'cat_title', 'cat_comment', 'cat_stop', 'cat_order'];
-     
-    }
+    protected $allowedFields = ['cat_id', 'cat_name', 'cat_title', 'cat_comment', 'cat_stop', 'cat_order', 'cat_prop_1', 'cat_prop_2']; 
 
     public function getAll($bOrdById = false){
         
         $orderBy = $bOrdById ? "cat_id" : "cat_order";
 
-        try {             
-            $this->mBuilder ->select($this->mTbColumn)
-                            ->orderBy($orderBy, 'ASC')
-                            ->getCompiledSelect(false);
-            $query = $this->mBuilder->get();
-            return $query->getResult();
-            
-        } catch (\Exception $e) {  
-            return [];
-        }
-        return [];
+        return $this->orderBy($orderBy, 'ASC')
+                    ->findAll();
     }
 
     public function getById($cat_id){
         
-        try {     
-            $cat_id = intval($cat_id);
-                        
-            $this->mBuilder ->select($this->mTbColumn)
-                            ->where('cat_id', trim($cat_id))
-                            ->getCompiledSelect(false);
-            $query = $this->mBuilder->get();
-            return $query->getRow();
-            
-        } catch (\Exception $e) {  
-            return NULL;
-        }
-        return NULL;
+        $cat_id = intval($cat_id);
+                    
+        return $this->where('cat_id', $cat_id)
+             ->first();
+
     }
 
     public function getByName($cat_name, $cat_id=0){
         
-        try {
             
-            $cat_name = trim(strtolower($cat_name));
+        $cat_name = trim(strtolower($cat_name));
 
-            $where = "cat_name = '".$cat_name."' ";
-            if($cat_id > 0)
-                $where.= "AND cat_id != '".$cat_id."' ";
+        $where = "cat_name = '".$cat_name."' ";
+        if($cat_id > 0)
+            $where.= "AND cat_id != '".$cat_id."' ";
 
-            $this->mBuilder ->select($this->mTbColumn)
-                            ->where($where)
-                            ->getCompiledSelect(false);
-            $query = $this->mBuilder->get();
-            return $query->getRow();
-            
-        } catch (\Exception $e) {  
-            return NULL;
-        }
-        return NULL;
+        return $this->where($where)
+                    ->first();
     }
 
     function deleteById($cat_id){
         
-        $cat_id = trim($cat_id);
-        $this->mBuilder->where('cat_id', $cat_id);
-        return $this->mBuilder->delete();   //if success, return true
+        return $this->where('cat_id', $cat_id)
+                    ->delete();
     }
-
     
     function register(&$arrData){
-        
 
         $arrCat = $this->getAll(true);
 
@@ -133,21 +95,27 @@ class Category_Model extends Model {
 
         $objCat = $this->getByName($arrData['cat_name']);
         if(!is_null($objCat))
-            return RESULT_EXIST_NAME;
+            return RESULT_EXIST_ID;
 
         if(!array_key_exists('cat_title', $arrData))
             return RESULT_ERROR;   
         else if(strlen($arrData['cat_title']) < 1)
             return RESULT_ERROR;  
         
-
-        $this->mBuilder->set('cat_id', $arrData['cat_id']);
-        $this->mBuilder->set('cat_name', trim(strtolower($arrData['cat_name'])));
-        $this->mBuilder->set('cat_title', trim($arrData['cat_title']));
-        $this->mBuilder->set('cat_order', $arrData['cat_order']);
-
-        if($this->mBuilder->insert())   //if success, return true
-            return RESULT_OK;
+        $data = [
+            'cat_id' => $arrData['cat_id'],
+            'cat_name' => trim(strtolower($arrData['cat_name'])),
+            'cat_title' => trim($arrData['cat_title']),
+            'cat_order' => $arrData['cat_order'],
+            'cat_prop_1' => $arrData['cat_prop_1'],
+        ];
+        try {             
+            $insertID = $this->insert($data);
+            if($insertID >= 0)   //if success, return true
+                return RESULT_OK;
+        } catch (\Exception $e) {  
+            return RESULT_FAIL;
+        }
         return RESULT_FAIL;
     }
 
@@ -160,13 +128,14 @@ class Category_Model extends Model {
             if(!is_null($objCat))
                 return RESULT_EXIST_NAME;
         }
-        
 
-        $this->mBuilder->set('cat_name', strtolower($arrData['cat_name']));
-        $this->mBuilder->set('cat_title', $arrData['cat_title']);
+        $data = [
+            'cat_name' => strtolower($arrData['cat_name']),
+            'cat_title' => $arrData['cat_title'],
+            'cat_prop_1' => $arrData['cat_prop_1'],
+        ];
         
-        $this->mBuilder->where('cat_id', $cat_id);
-        if($this->mBuilder->update())   //if success, return true
+        if($this->set($data)->where('cat_id', $cat_id)->update())   //if success, return true
             return RESULT_OK;
         return RESULT_FAIL;
     }
@@ -174,18 +143,18 @@ class Category_Model extends Model {
     function updateById($cat_id, $arrData){
         $cat_id = intval($cat_id);
               
+        $data = [];
         if(array_key_exists('cat_stop', $arrData))
-            $this->mBuilder->set('cat_stop', intval($arrData['cat_stop']));
+            $data['cat_stop'] = intval($arrData['cat_stop']);
         else if(array_key_exists('cat_order', $arrData))
-            $this->mBuilder->set('cat_order', intval($arrData['cat_order']));
+            $data['cat_order'] = intval($arrData['cat_order']);
         else 
             return RESULT_FAIL;
         
-        
-        $this->mBuilder->where('cat_id', $cat_id);
-        if($this->mBuilder->update())   //if success, return true
+        if($this->set($data)->where('cat_id', $cat_id)->update())   //if success, return true
             return RESULT_OK;
         return RESULT_FAIL;
+            
     }
 
 }

@@ -1,3 +1,9 @@
+const LEVEL_ADMIN = 10;
+const LEVEL_COMPANY = 9;
+const LEVEL_AGENCY = 8;
+const LEVEL_EMPLOYEE = 7;
+const LEVEL_MIN = 1;
+
 function setCookie(name, value, expiredays) {
 
     if (expiredays) {

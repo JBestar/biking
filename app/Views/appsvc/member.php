@@ -30,6 +30,9 @@
                         <th></th>
                         <th></th>
                         <th></th>
+                        <?php if($cat->cat_prop_1 == STATE_ACTIVE) : ?>
+                        <th>기기설정</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody id="tb-data-id">
@@ -52,6 +55,10 @@
     </div>
 </div>
 
-
-<script src="<?php echo base_url('/assets/js/appsvc/member-common.js?v=1');?>"></script>
-<script src="<?php echo base_url('/assets/js/appsvc/member.js?v=1');?>"></script>
+<?php if($_ENV['CI_ENVIRONMENT'] == ENV_PRODUCTION) :?>
+    <script src="/assets/js/appsvc/member-common.js?v=1"></script>
+    <script src="/assets/js/appsvc/member.js?v=2"></script>
+<?php else : ?>
+    <script src="/assets/js/appsvc/member-common.js?v=<?=time();?>"></script>
+    <script src="/assets/js/appsvc/member.js?v=<?=time();?>"></script>
+<?php endif ?>

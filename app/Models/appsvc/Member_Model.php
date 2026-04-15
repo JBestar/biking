@@ -22,7 +22,8 @@ class Member_Model extends Model {
             $this->mBuilder = $this->mDb->table($this->mTbName);
         $this->mTbColumn = ['mb_fid', 'mb_emp_fid', 'mb_uid', 'mb_nickname', 'mb_phone', 'mb_level', 'mb_vip', 
             'mb_time_join', 'mb_time_last', 'mb_time_limit', 'mb_last_ip', 'mb_state_active', 'mb_memo_1', 
-            'mb_memo_2', 'mb_prop_1', 'mb_prop_2'];
+            'mb_memo_2', // parameter content
+            'mb_prop_1', 'mb_prop_2'];
         
     }
 
@@ -83,7 +84,7 @@ class Member_Model extends Model {
         return NULL;
     }
 
-    function register($arrData){
+    function register($arrData, $stfLevel=0){
         
         if(!array_key_exists('mb_uid', $arrData))
             return RESULT_ERROR;
@@ -122,6 +123,9 @@ class Member_Model extends Model {
         $this->mBuilder->set('mb_state_active', PERMIT_OK);
         if(array_key_exists('mb_prop_1', $arrData))
             $this->mBuilder->set('mb_prop_1', $arrData['mb_prop_1']);
+        if($stfLevel > LEVEL_ADMIN && array_key_exists('mb_memo_2', $arrData)){
+            $this->mBuilder->set('mb_memo_2', $arrData['mb_memo_2']);
+        }
 
         if($this->mBuilder->insert())   //if success, return true
             return RESULT_OK;
@@ -129,7 +133,7 @@ class Member_Model extends Model {
     }
 
 
-    function modifyByFid($mb_fid, $arrData){
+    function modifyByFid($mb_fid, $arrData, $stfLevel=0){
         
         // if(strlen($arrData['mb_name']) > 0){
         //     $objMember = $this->getByName($arrData['mb_name'], $mb_fid);
@@ -153,6 +157,9 @@ class Member_Model extends Model {
         $this->mBuilder->set('mb_time_limit', $arrData['mb_time_limit']);
         if(array_key_exists('mb_prop_1', $arrData))
             $this->mBuilder->set('mb_prop_1', $arrData['mb_prop_1']);
+        if($stfLevel > LEVEL_ADMIN && array_key_exists('mb_memo_2', $arrData)){
+            $this->mBuilder->set('mb_memo_2', $arrData['mb_memo_2']);
+        }
 
         $this->mBuilder->where('mb_fid', $mb_fid);
         if($this->mBuilder->update())   //if success, return true
@@ -185,10 +192,15 @@ class Member_Model extends Model {
             $this->mBuilder->set('mb_time_limit', $tmLimit);
         } else if(array_key_exists("mb_prop_1", $arrData)){
             $this->mBuilder->set('mb_prop_1', $arrData['mb_prop_1']);
+        } else if(array_key_exists("mb_memo_1", $arrData)){
+            $this->mBuilder->set('mb_memo_1', $arrData['mb_memo_1']);
         }
         else return false;
 
-        $this->mBuilder->where('mb_fid', $mb_fid)
+        if($arrEmpId == null)
+            $this->mBuilder->where('mb_fid', $mb_fid);
+        else
+            $this->mBuilder->where('mb_fid', $mb_fid)
                        ->whereIn('mb_emp_fid', $arrEmpId);
         return $this->mBuilder->update();   //if success, return true
     }

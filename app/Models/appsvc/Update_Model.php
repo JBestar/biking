@@ -124,8 +124,9 @@ class Update_Model extends Model {
     function searchCount(){
         
         try { 
+            $columns = ['update_id', 'update_version', 'update_date', 'update_author'];
             
-            $this->mBuilder ->select($this->mTbColumn)  
+            $this->mBuilder ->select($columns)  
                             ->orderBy('update_version', 'DESC')                          
                             ->getCompiledSelect(false);
 
@@ -145,7 +146,9 @@ class Update_Model extends Model {
             if($cntPer < 1)
                 return NULL;
 
-            $this->mBuilder ->select($this->mTbColumn)    
+            $columns = ['update_id', 'update_version', 'update_date', 'update_author'];
+
+            $this->mBuilder ->select($columns)    
                             ->orderBy('update_version', 'DESC')
                             ->getCompiledSelect(false);
 

@@ -90,8 +90,8 @@ class Forge_Model extends Model {
             'mb_last_ip'    => [ 'type' => 'VARCHAR', 'constraint' => '60' ],
             'mb_state_active'  => [ 'type' => 'INT' ],
             'mb_state_delete'  => [ 'type' => 'INT' ],
-            'mb_memo_1'     => [ 'type' => 'VARCHAR', 'constraint' => '50' ],
-            'mb_memo_2'     => [ 'type' => 'VARCHAR', 'constraint' => '50' ],
+            'mb_memo_1'     => [ 'type' => 'VARCHAR', 'constraint' => '512' ],
+            'mb_memo_2'     => [ 'type' => 'TEXT' ],
             'mb_prop_1'     => [ 'type' => 'INT' ],
             'mb_prop_2'     => [ 'type' => 'INT' ],
         ];

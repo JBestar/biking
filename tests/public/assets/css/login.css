@@ -1,0 +1,36 @@
+@charset "utf-8";
+html {font-size-adjust: none; -webkit-text-size-adjust: none; -moz-text-size-adjust: none; -ms-text-size-adjust: none;}
+body,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textare a,button,select{margin:0;padding:0}
+ul,ol,dl,li,dd,dt {list-style:none;}
+body {height:100%; line-height: 1; font-size:13px; background-color: #222121; font-family: 'NTS_L',Sans-serif;}
+img,fieldset,iframe,button {border:none; outline: none;}
+i,em,address{font-style:normal;}
+button,label{cursor:pointer}
+table {border-collapse:collapse; border-spacing:0; vertical-align:middle;}
+input,select,button,textarea{vertical-align:middle; border: 0; outline: none; color:#222; font-family: 'NTS_L',Sans-serif;}
+input:focus,textarea:focus {outline:none}
+a:link, a:visited, a:hover, a:active {text-decoration:none;}
+
+
+/********************************************************
+■ index : 첫화면
+********************************************************/
+.ibg {width: 100% !important; height: 100vh !important; background:#000 url(/assets/img/mbg.jpg)no-repeat;background-position: 50%;background-size:cover;display: table;position: absolute;}
+.login_warp {position: absolute; left: 50%; top: 150px; width: 340px; margin-left: -180px; animation:index 3s ease-in-out; -webkit-animation:index 3s ease-in-out;}
+.login_warp h2 {margin-bottom: 20px; text-align: center; animation:index_logo 2s infinite ease-in-out; -webkit-animation:index_logo 2s infinite ease-in-out;}
+.login_warp h2 img {width: 60%;}
+
+.lg_box {display: none; position: relative; padding: 20px 20px 10px 20px; border-radius: 3px; -webkit-border-radius: 3px;box-shadow:3px 3px 10px #000;border: 1px solid rgba(255, 255, 255, 0.2); }
+.lg_box.on {display: block;}
+.lg_box .login {display: block;}
+.lg_box .login .lg_id {position: relative; line-height: 46px;height: 46px; margin-bottom: 10px; border: 1px solid #777; background-color: #e8f0fe; border-radius: 3px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) inset;}
+.lg_box .login .lg_pw {position: relative; line-height: 46px;height: 46px; margin-bottom: 10px; border: 1px solid #777; background-color: #e8f0fe; border-radius: 3px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) inset;}
+
+.lg_box .login .input_type {width: 240px; /*line-height: 46px;height: 46px;*/ margin: 0 20px; background-color: transparent; color: #000; font-size: 16px;}
+.lg_box .btlogin {width: 100%; background-color: #910000; color: #fff;}
+.lg_box .btlogin:hover {background-color: #c10000;}
+.lg_box .btjoin {background-color: #262a35; color: #fff;}
+.lg_box .btjoin:hover {background-color: #37404f;}
+.lg_box .lg_bt {display: block; line-height: 48px; margin-bottom: 10px; font-size: 16px; text-align: center; letter-spacing: -0.5px; outline: 0; border-radius: 3px; cursor: pointer; transition:all .3s ease-out; -webkit-transition:all .3s ease-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5)}
+
+.joinform-footer {text-align:center;color:#000000;opacity:0.8;margin:20px auto;font-size:11px;}

@@ -23,7 +23,7 @@ class Staff_Model extends Model {
             'stf_app_05', 'stf_app_06', 'stf_app_07', 'stf_app_08', 'stf_app_09', 'stf_app_10', 'stf_app_11', 
             'stf_app_12', 'stf_app_13', 'stf_app_14', 'stf_app_15', 'stf_app_16', 'stf_app_17', 'stf_app_18',
             'stf_app_19', 'stf_app_20', 'stf_app_21', 'stf_app_22', 'stf_app_23', 'stf_app_24', 'stf_app_25',
-            'stf_app_26', 'stf_app_27', 'stf_app_28', 'stf_app_29', 'stf_app_30'];
+            'stf_app_26', 'stf_app_27', 'stf_app_28', 'stf_app_29', 'stf_app_30', 'stf_memo'];
         
     }
 
@@ -115,7 +115,7 @@ class Staff_Model extends Model {
                         stf_app_06, stf_app_07, stf_app_08, stf_app_09, stf_app_10, stf_app_11, stf_app_12, 
                         stf_app_13, stf_app_14, stf_app_15, stf_app_16, stf_app_17, stf_app_18, stf_app_19, stf_app_20,
                         stf_app_21, stf_app_22, stf_app_23, stf_app_24, stf_app_25, stf_app_26, stf_app_27, stf_app_28,
-                        stf_app_29, stf_app_30 ";
+                        stf_app_29, stf_app_30, stf_memo ";
 
 
             $strTbRColum = " r.stf_fid, r.stf_uid, r.stf_level, r.stf_emp_fid, r.stf_nickname, r.stf_time_join, r.stf_time_last,  
@@ -123,7 +123,7 @@ class Staff_Model extends Model {
                         r.stf_app_05, r.stf_app_06, r.stf_app_07, r.stf_app_08, r.stf_app_09, r.stf_app_10, r.stf_app_11,
                         r.stf_app_12, r.stf_app_13, r.stf_app_14, r.stf_app_15, r.stf_app_16, r.stf_app_17, r.stf_app_18,
                         r.stf_app_19, r.stf_app_20, r.stf_app_21, r.stf_app_22, r.stf_app_23, r.stf_app_24, r.stf_app_25,
-                        r.stf_app_26, r.stf_app_27, r.stf_app_28, r.stf_app_29, r.stf_app_30 ";
+                        r.stf_app_26, r.stf_app_27, r.stf_app_28, r.stf_app_29, r.stf_app_30, r.stf_memo ";
 
 
             $strSQL = "WITH RECURSIVE tbmember (".$strTbColum.") AS";
@@ -145,7 +145,7 @@ class Staff_Model extends Model {
 
     }
 
-    function register($arrData){
+    function register($arrData, $stfLevel){
         
         if(!array_key_exists('stf_uid', $arrData))
             return RESULT_ERROR;
@@ -161,14 +161,15 @@ class Staff_Model extends Model {
         if(!is_null($objStaff))
             return RESULT_EXIST_NAME;
 
+        $objUpper = null;
         if(!array_key_exists('stf_emp_fid', $arrData))
             return RESULT_ERROR;
         else if($arrData['stf_emp_fid'] > 0){
-            $objAdmin = $this->getByFid($arrData['stf_emp_fid']);
+            $objUpper = $this->getByFid($arrData['stf_emp_fid']);
             
-            if(is_null($objAdmin))
+            if(is_null($objUpper))
                 return RESULT_ERROR;
-            else if($objAdmin->stf_level != intval($arrData['stf_level'])+1)
+            else if($objUpper->stf_level != intval($arrData['stf_level'])+1)
                 return RESULT_ERROR;
 
         } else if($arrData['stf_emp_fid'] == 0){
@@ -187,7 +188,14 @@ class Staff_Model extends Model {
         $this->mBuilder->set('stf_time_join', 'NOW()', false);
         $this->mBuilder->set('stf_color', $arrData['stf_color']);        
         $this->mBuilder->set('stf_state_active', PERMIT_OK);
-        
+        if($stfLevel > LEVEL_ADMIN){
+            if(array_key_exists("stf_memo", $arrData)){
+                $this->mBuilder->set('stf_memo', $arrData['stf_memo']);        
+            }
+        } else if(!is_null($objUpper)){
+            $this->mBuilder->set('stf_memo', $objUpper->stf_memo);        
+        }
+
         if($this->mBuilder->insert())   //if success, return true
             return RESULT_OK;
         return RESULT_FAIL;
@@ -210,7 +218,7 @@ class Staff_Model extends Model {
         return $this->mDb->query($strSQL)->getResult();
     }
 
-    function modifyByFid($stf_fid, $arrData){
+    function modifyByFid($stf_fid, $arrData, $stfLevel){
         
         
         $objStaff = $this->getByName($arrData['stf_name'], $stf_fid);
@@ -230,7 +238,10 @@ class Staff_Model extends Model {
         else return RESULT_ERROR;
 
         $this->mBuilder->set('stf_color', $arrData['stf_color']);
-        
+        if($stfLevel > LEVEL_ADMIN){
+            if(array_key_exists("stf_memo", $arrData))
+                $this->mBuilder->set('stf_memo', $arrData['stf_memo']);
+        }
         $this->mBuilder->where('stf_fid', $stf_fid);
         if($this->mBuilder->update())   //if success, return true
             return RESULT_OK;
@@ -305,6 +316,28 @@ class Staff_Model extends Model {
 
         $this->mBuilder->where('stf_fid', $stf_fid);
         return $this->mBuilder->update();   //if success, return true
+    }
+
+    public function updateLowers($emp_fid, $arrData){
+
+        $sqlSet = "";
+        if(array_key_exists("stf_memo", $arrData)){
+            $sqlSet = "stf_memo = '".$arrData['stf_memo']."'";
+        } else return false;
+
+        $fields = ['stf_fid', 'stf_uid', 'stf_level', 'stf_emp_fid', 'stf_nickname'];
+        $tbColum = " ".implode(", ", $fields);
+        $tbRColum = " r.".implode(", r.", $fields);
+
+        $sql = "UPDATE tbl0_staff SET ".$sqlSet." WHERE stf_fid IN (";
+        $sql.= " WITH RECURSIVE tbmember ( ".$tbColum." ) ";
+        $sql.= " AS ( SELECT  ".$tbColum." FROM ".$this->mTbName." WHERE stf_emp_fid = '".$emp_fid."' ";
+        $sql.= " UNION ALL SELECT ".$tbRColum." FROM ".$this->mTbName." r  ";
+        $sql.= " INNER JOIN tbmember ON r.stf_emp_fid = tbmember.stf_fid ) ";
+        $sql.= " SELECT stf_fid FROM tbmember) ";
+        // writeLog($sql);
+        return $this->mDb->simpleQuery($sql);    // if success return true 
+
     }
 
     public function updateLastTime($uid){
@@ -477,6 +510,7 @@ class Staff_Model extends Model {
 					$objEmp = new \StdClass;
 					$objEmp->stf_fid = $objChild->stf_fid;
 					$objEmp->stf_name = $objChild->stf_name;
+					$objEmp->stf_memo = $objChild->stf_memo;
 					if(!in_array($objEmp, $arrEmp))
 						array_push($arrEmp, $objEmp);
 					break;
@@ -601,7 +635,7 @@ class Staff_Model extends Model {
         return true;
     }
 
-    function isPermitMember($objMember, $category){
+    function isPermitMember($objMember, $category, &$objParent=null){
         if(is_null($objMember))
             return false;
         //매장
@@ -625,6 +659,7 @@ class Staff_Model extends Model {
         if($objComp->stf_level != LEVEL_COMPANY || $objComp->stf_state_active != PERMIT_OK || !isAppOn($objComp, $category))
             return false;
 
+        $objParent = $objEmpl;
         return true;
     }
 

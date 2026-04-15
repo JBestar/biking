@@ -8,7 +8,9 @@ function saveStaff(){
     objStaff.stf_pwd = $("#stf_pwd").val();
     objStaff.stf_name = $("#stf_name").val();
     objStaff.stf_color = $("#stf_color").val();
-    
+    if($("#stf_memo").length > 0)
+        objStaff.stf_memo = $("#stf_memo").val();
+
     if(stf_level == 9){
         objStaff.stf_emp_fid = 0;
         objStaff.stf_level = 9;
@@ -105,6 +107,19 @@ function saveStaff(){
             }
 
         });
+    }
+    
+}
+
+function empChanged(){
+    if($("#stf_memo").length < 1)
+        return;
+
+    let stf_fid = $("#stf_emp").val();
+    let option = $(`#stf_emp option[value='${stf_fid}']`); 
+    
+    if(option.length > 0){
+        $("#stf_memo").val($(option).data("memo"));
     }
     
 }

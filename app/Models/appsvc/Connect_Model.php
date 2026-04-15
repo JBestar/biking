@@ -151,6 +151,15 @@ class Connect_Model extends Model {
         return $this->mBuilder->delete();   //if success, return true
     }
 
+    function deleteTempById($sess_id){
+        //실시간접속 페이지에서 로그아웃클릭시 접속된 유저의 매장아이디를 0으로 초기화
+        writeLog($this->mTbName.">>session=".$sess_id."(delete temp)");
+
+        $this->mBuilder->set('sess_emp_fid', 0);
+        $this->mBuilder->where('sess_id', $sess_id);
+        return $this->mBuilder->update();   //if success, return true
+    }
+
     function deleteByUid($sess_mb_uid){
 
         $this->mBuilder->where('sess_mb_uid', $sess_mb_uid);
