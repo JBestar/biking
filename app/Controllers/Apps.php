@@ -2418,6 +2418,7 @@ class Apps extends BaseController
 		$force = intval($this->request->getVar('force'));
 		$ip_address = $this->request->getIPAddress();
 		$machine = $this->request->getVar('machine');
+		$machineLen = strlen((string)$machine);
 		
 		$arrResult = [];
 		
@@ -2425,6 +2426,7 @@ class Apps extends BaseController
 		
 		$objCat = $cat_model->getByName($app);
 		if(is_null($objCat)) {
+			log_message('error', '[Apps::login] no app found app='.$app.' uid='.$uid.' ip='.$ip_address);
 			$arrResult['result'] = APPRESULT_NO_APP;
 		} else {
 			$this->categoryId = $objCat->cat_id;
@@ -2438,10 +2440,12 @@ class Apps extends BaseController
 			$objMember = $member_model->getByUid($uid);
 			
 			if(is_null($objMember)){
+				log_message('error', '[Apps::login] user not found app='.$this->categoryName.' uid='.$uid.' ip='.$ip_address);
 				$arrResult['result'] = APPRESULT_NONE_ID;
 			} else {
 				$objMember = $member_model->login($uid, $pwd);
 				if(is_null($objMember)){
+					log_message('error', '[Apps::login] password mismatch app='.$this->categoryName.' uid='.$uid.' ip='.$ip_address);
 					$arrResult['result'] = APPRESULT_ERROR_PWD;
 				} else {
 					
@@ -2453,19 +2457,35 @@ class Apps extends BaseController
 					$objParent = null;
 					$tmNow = time();
 					$tmLimit = strtotime($objMember->mb_time_limit);
+					$permitMember = $staff_model->isPermitMember($objMember, $this->categoryId, $objParent);
 					if($tmLimit < $tmNow) {
+						log_message('error', '[Apps::login] expired account app='.$this->categoryName.' uid='.$objMember->mb_uid.' limit='.$objMember->mb_time_limit.' now='.date('Y-m-d H:i:s', $tmNow));
 						$arrResult['result'] = APPRESULT_EXPIRED;
 					} else if($objMember->mb_state_active != PERMIT_OK || 
-							!$staff_model->isPermitMember($objMember, $this->categoryId, $objParent) ||
+							!$permitMember ||
 							$objCat->cat_stop == 1) {
+						log_message(
+							'error',
+							'[Apps::login] blocked-permit app='.$this->categoryName
+							.' uid='.$objMember->mb_uid
+							.' mb_state_active='.$objMember->mb_state_active
+							.' permit_member='.($permitMember ? '1' : '0')
+							.' cat_stop='.$objCat->cat_stop
+							.' force='.$force
+							.' ip='.$ip_address
+						);
 						$arrResult['result'] = APPRESULT_BLOCK;
 					} else if($force != 1 && !is_null($connRepeat)){
+						log_message('error', '[Apps::login] duplicate-session app='.$this->categoryName.' uid='.$objMember->mb_uid.' force=0 current_ip='.$ip_address.' old_ip='.$connRepeat->sess_pub_addr);
 						$arrResult['result'] = APPRESULT_DUPLICATE;
 					} else if($force == 1 && !is_null($connRepeat) && $connRepeat->sess_pub_addr !== $ip_address){
+						log_message('error', '[Apps::login] duplicate-session-force-ip-mismatch app='.$this->categoryName.' uid='.$objMember->mb_uid.' current_ip='.$ip_address.' old_ip='.$connRepeat->sess_pub_addr);
 						$arrResult['result'] = APPRESULT_DUPLICATE;
 					} else if($enableMachVerify && strlen($machine) == 0 ){
+						log_message('error', '[Apps::login] blocked-machine-empty app='.$this->categoryName.' uid='.$objMember->mb_uid.' cat_prop_1='.$objCat->cat_prop_1.' mb_memo_1_len='.strlen((string)$objMember->mb_memo_1).' machine_len='.$machineLen.' ip='.$ip_address);
 						$arrResult['result'] = APPRESULT_BLOCK;
 					} else if($enableMachVerify && strlen($objMember->mb_memo_1) > 0 && $objMember->mb_memo_1 !== $machine  ){
+						log_message('error', '[Apps::login] blocked-machine-mismatch app='.$this->categoryName.' uid='.$objMember->mb_uid.' cat_prop_1='.$objCat->cat_prop_1.' machine_len='.$machineLen.' stored_machine_len='.strlen((string)$objMember->mb_memo_1).' ip='.$ip_address);
 						$arrResult['result'] = APPRESULT_BLOCK;
 					} else {
 						if($force == 1 && !is_null($connRepeat))
@@ -2485,7 +2505,10 @@ class Apps extends BaseController
 							$arrResult['result'] = APPRESULT_OK;
 							$arrResult['remained'] = strval($tmLimit-$tmNow);
 							$arrResult['vip'] = strval($objMember->mb_vip);
-						} else $arrResult['result'] = APPRESULT_FAIL_SAVE;
+						} else {
+							log_message('error', '[Apps::login] conn register failed app='.$this->categoryName.' uid='.$objMember->mb_uid.' sess_id='.$sess_id.' ip='.$ip_address);
+							$arrResult['result'] = APPRESULT_FAIL_SAVE;
+						}
 						
 					}
 				}	
